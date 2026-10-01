@@ -37,8 +37,8 @@ well: blocking the crawl stops that tag being read, which is the opposite of the
 4. Deploy → New deployment → Web app
    - Execute as: **Me**
    - Who has access: **Anyone**
-5. Copy the URL into `__AK_DATA__.form.endpoint`
-6. Put the same `SECRET` into `__AK_DATA__.form.secret`
+5. Copy the URL into `form.endpoint` in `data.js`
+6. Put the same `SECRET` into `form.secret`
 
 Google will warn that the app is unverified. That warning is for apps asking *other*
 people for access; here only you authorise it, and the script only touches your own
@@ -48,6 +48,24 @@ The sheet stays private. Guests never authenticate; they only invoke the script,
 script only appends a row. Tabs `Xác nhận` and `Lời chúc` are created on first use.
 
 Leave `endpoint` empty and the forms simply keep answers in the guest's own browser.
+
+### After every edit to the script
+
+Deploy → **Manage deployments** → the pencil → Version: **New version** → Deploy.
+
+A deployment keeps serving the version it was created from, so editing the code alone
+changes nothing and the URL answers `Script function not found: doPost`. Use the pencil,
+not **New deployment**: that issues a different URL and `data.js` would need updating.
+
+### Checking it works
+
+```bash
+curl -sL -X POST "<your url>" -d secret=<SECRET> -d kind=ping
+```
+
+It answers `ok: <sheet name>`, or names what it rejected (`bad-kind`, `bad-name`,
+`too-fast`, `error: …`). An empty answer means the secret did not match. Apps Script
+returns 200 even for its own errors, so the body is the only thing worth reading.
 
 ## Deploying
 
@@ -61,7 +79,8 @@ Then repo Settings → Pages → branch `main`, folder `/ (root)`.
 ## Layout
 
 ```
-index.html        the whole page, including the data block
+index.html        the page, generated; the element-id maps live here
+data.js           the content: names, ceremonies, photos, form settings
 img/              176 images
 media/            background-music.mp3
 apps-script.gs    paste into Google Apps Script
