@@ -1,68 +1,80 @@
 /**
- * Nhận xác nhận tham dự và lời chúc từ trang thiệp cưới, ghi vào hai sheet.
+ * Receives RSVPs and well-wishes from the wedding invitation and appends them to
+ * two tabs of this spreadsheet.
  *
- * CÀI ĐẶT
- *  1. Mở Google Sheet của bạn, vào Tiện ích mở rộng > Apps Script
- *  2. Dán toàn bộ file này, thay BI_MAT bên dưới bằng một chuỗi bất kỳ
- *  3. Bấm Triển khai > Tùy chọn triển khai mới > Ứng dụng web
- *       Thực thi với tư cách: Tôi
- *       Ai có quyền truy cập: Bất kỳ ai
- *  4. Chép URL nhận được, dán vào __AK_DATA__.form.endpoint trong index.html
- *  5. Dán cùng chuỗi BI_MAT vào __AK_DATA__.form.biMat
+ * SETUP
+ *  1. In your Google Sheet: Extensions > Apps Script, paste this file
+ *  2. Change SECRET below to any string of your own
+ *  3. Deploy > New deployment > Web app
+ *       Execute as:      Me
+ *       Who has access:  Anyone
+ *  4. Copy the URL it gives you into __AK_DATA__.form.endpoint in index.html
+ *  5. Put the same SECRET into __AK_DATA__.form.secret
  *
- * Sheet vẫn riêng tư. Script chạy dưới quyền bạn; khách chỉ gọi được script này,
- * và script chỉ biết thêm dòng, không đọc, không sửa, không xoá.
+ * The sheet stays private. This script runs as you, so it may write to it; a guest
+ * can only invoke the script, and the script only ever appends a row.
  */
 
-var BI_MAT = 'doi-chuoi-nay-di';     // phải khớp với biMat trong trang
-var TOI_DA_MOI_PHUT = 20;            // chặn spam: số dòng tối đa mỗi phút
+var SECRET = 'change-this-string';   // must match form.secret in the page
+var MAX_PER_MINUTE = 20;             // throttle: rows accepted per minute
 
-function doGet() {                   // mở URL bằng trình duyệt thì không thấy gì
-  return ContentService.createTextOutput('');
+// Tab names and column headers are read by the couple, so they stay in Vietnamese.
+var RSVP_TAB = 'Xác nhận';
+var RSVP_HEADERS = ['Thời điểm', 'Họ tên', 'Tham dự', 'Nơi tham dự', 'Số người', 'Lời nhắn'];
+var WISH_TAB = 'Lời chúc';
+var WISH_HEADERS = ['Thời điểm', 'Họ tên', 'Quan hệ', 'Lời chúc'];
+
+function doGet() {                   // opening the URL in a browser reveals nothing
+  return empty_();
 }
 
 function doPost(e) {
   try {
     var p = (e && e.parameter) || {};
 
-    if (p.biMat !== BI_MAT) return ok();                 // thiếu mã thì bỏ qua lặng lẽ
-    if (p.website) return ok();                          // bẫy bot: ô ẩn phải rỗng
-    var ten = String(p.ten || '').trim();
-    if (!ten || ten.length > 80) return ok();             // không tên hoặc tên vô lý
-    if (['xacnhan', 'loichuc'].indexOf(p.loai) < 0) return ok();
-    if (quaNhanh_()) return ok();
+    if (p.secret !== SECRET) return empty_();          // wrong or missing: drop silently
+    if (p.website) return empty_();                    // honeypot, must stay empty
+    if (['rsvp', 'wish'].indexOf(p.kind) < 0) return empty_();
+    var name = String(p.name || '').trim();
+    if (!name || name.length > 80) return empty_();
+    if (tooFast_()) return empty_();
 
     var ss = SpreadsheetApp.getActiveSpreadsheet();
-    if (p.loai === 'xacnhan') {
-      sheet_(ss, 'XacNhan', ['Thời điểm', 'Họ tên', 'Tham dự', 'Nơi tham dự', 'Số người', 'Lời nhắn'])
-        .appendRow([new Date(), ten, cut_(p.thamDu, 40), cut_(p.noi, 60), cut_(p.soNguoi, 10), cut_(p.loiNhan, 500)]);
+    if (p.kind === 'rsvp') {
+      tab_(ss, RSVP_TAB, RSVP_HEADERS).appendRow([
+        new Date(), name, clip_(p.attending, 40), clip_(p.venue, 60),
+        clip_(p.guests, 10), clip_(p.message, 500)
+      ]);
     } else {
-      sheet_(ss, 'LoiChuc', ['Thời điểm', 'Họ tên', 'Quan hệ', 'Lời chúc'])
-        .appendRow([new Date(), ten, cut_(p.quanHe, 60), cut_(p.loiChuc, 500)]);
+      tab_(ss, WISH_TAB, WISH_HEADERS).appendRow([
+        new Date(), name, clip_(p.relation, 60), clip_(p.wish, 500)
+      ]);
     }
   } catch (err) {
-    // nuốt lỗi: trang không đọc được phản hồi nên báo lỗi ra ngoài cũng vô ích
+    // swallowed on purpose: the page cannot read our reply, so surfacing an error
+    // here would only leave the guest staring at a form that looks broken
   }
-  return ok();
+  return empty_();
 }
 
-function ok() { return ContentService.createTextOutput(''); }
-function cut_(v, n) { return String(v == null ? '' : v).slice(0, n); }
+function empty_() { return ContentService.createTextOutput(''); }
 
-function sheet_(ss, ten, tieuDe) {
-  var sh = ss.getSheetByName(ten);
-  if (!sh) {
-    sh = ss.insertSheet(ten);
-    sh.appendRow(tieuDe);
-    sh.setFrozenRows(1);
+function clip_(value, max) { return String(value == null ? '' : value).slice(0, max); }
+
+function tab_(ss, name, headers) {
+  var sheet = ss.getSheetByName(name);
+  if (!sheet) {
+    sheet = ss.insertSheet(name);
+    sheet.appendRow(headers);
+    sheet.setFrozenRows(1);
   }
-  return sh;
+  return sheet;
 }
 
-function quaNhanh_() {
-  var c = CacheService.getScriptCache();
-  var key = 'dem-' + Math.floor(Date.now() / 60000);
-  var n = Number(c.get(key) || 0) + 1;
-  c.put(key, String(n), 120);
-  return n > TOI_DA_MOI_PHUT;
+function tooFast_() {
+  var cache = CacheService.getScriptCache();
+  var key = 'count-' + Math.floor(Date.now() / 60000);
+  var n = Number(cache.get(key) || 0) + 1;
+  cache.put(key, String(n), 120);
+  return n > MAX_PER_MINUTE;
 }
