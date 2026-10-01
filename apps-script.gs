@@ -31,6 +31,9 @@
  *
  * The sheet stays private. This script runs as you, so it may write to it; a guest
  * can only invoke the script, and the script only ever appends a row.
+ *
+ * The page also reads the wishes back to show them. That one list is public; the RSVP
+ * tab is not exposed by anything here. See doGet.
  */
 
 var SECRET = 'change-this-string';   // must match form.secret in the page
@@ -40,10 +43,54 @@ var MAX_PER_MINUTE = 20;             // throttle: rows accepted per minute
 var RSVP_TAB = 'Xác nhận';
 var RSVP_HEADERS = ['Thời điểm', 'Họ tên', 'Tham dự', 'Nơi tham dự', 'Số người', 'Lời nhắn'];
 var WISH_TAB = 'Lời chúc';
-var WISH_HEADERS = ['Thời điểm', 'Họ tên', 'Quan hệ', 'Lời chúc'];
+var WISH_HEADERS = ['Thời điểm', 'Họ tên', 'Quan hệ', 'Lời chúc', 'Ẩn'];
+var WISH_CACHE_SECONDS = 120;        // how long the page may show a stale list
 
-function doGet() {                   // opening the URL in a browser reveals nothing
-  return empty_();
+/**
+ * Reading back.
+ *
+ * Only the wishes, and only name, relation and wish: no timestamps, and nothing at all
+ * from the RSVP tab. Whatever this returns is public, because the page that calls it is
+ * public and its URL is in the page source. Who is coming, how many they bring and what
+ * they said privately is the couple's business, so it never leaves the sheet.
+ *
+ * No secret guards this. One would have to ship in the page to be usable, which makes it
+ * decoration rather than a control, and pretending otherwise is worse than saying so.
+ *
+ * Put an x in the Ẩn column to drop a row from the page. A row is shown unless told
+ * otherwise, so a guest who writes a wish sees it appear instead of waiting on approval.
+ */
+function doGet(e) {
+  var p = (e && e.parameter) || {};
+  if (p.what !== 'wishes') return empty_();   // a plain browser visit still reveals nothing
+
+  var cache = CacheService.getScriptCache();
+  var hit = cache.get('wishes');
+  if (hit) return json_(hit);
+
+  var out = [];
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(WISH_TAB);
+    if (sheet && sheet.getLastRow() > 1) {
+      var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, WISH_HEADERS.length).getValues();
+      for (var i = rows.length - 1; i >= 0 && out.length < 200; i--) {   // newest first
+        if (String(rows[i][4] || '').trim()) continue;                   // the Ẩn column
+        var wish = String(rows[i][3] || '').trim();
+        if (!wish) continue;
+        out.push({
+          name: String(rows[i][1] || '').trim(),
+          relation: String(rows[i][2] || '').trim(),
+          wish: wish
+        });
+      }
+    }
+  } catch (err) {
+    return json_('[]');   // the page shows the book without a list rather than an error
+  }
+
+  var body = JSON.stringify(out);
+  cache.put('wishes', body, WISH_CACHE_SECONDS);
+  return json_(body);
 }
 
 function doPost(e) {
@@ -74,8 +121,9 @@ function doPost(e) {
       return say_('ok: ' + RSVP_TAB);
     }
     tab_(ss, WISH_TAB, WISH_HEADERS).appendRow([
-      new Date(), name, clip_(p.relation, 60), clip_(p.wish, 500)
+      new Date(), name, clip_(p.relation, 60), clip_(p.wish, 500), ''
     ]);
+    CacheService.getScriptCache().remove('wishes');   // so the writer sees their own row
     return say_('ok: ' + WISH_TAB);
   } catch (err) {
     return say_('error: ' + err);
@@ -83,6 +131,10 @@ function doPost(e) {
 }
 
 function empty_() { return ContentService.createTextOutput(''); }
+
+function json_(body) {
+  return ContentService.createTextOutput(body).setMimeType(ContentService.MimeType.JSON);
+}
 
 function say_(text) { return ContentService.createTextOutput(text); }
 
@@ -94,7 +146,17 @@ function tab_(ss, name, headers) {
     sheet = ss.insertSheet(name);
     sheet.appendRow(headers);
     sheet.setFrozenRows(1);
+    return sheet;
   }
+  // a tab created before a column was added keeps its old header row, which leaves the
+  // couple guessing what the blank column is for
+  var row = sheet.getRange(1, 1, 1, headers.length);
+  var have = row.getValues()[0];
+  for (var i = 0; i < headers.length; i++) {
+    if (String(have[i] || '').trim()) continue;
+    have[i] = headers[i];
+  }
+  row.setValues([have]);
   return sheet;
 }
 

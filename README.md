@@ -11,7 +11,7 @@ Open `data.js`. It is the only file to edit, and everything a reader sees is in 
 | `bride`, `groom` | name, parents, home town, short intro, quote |
 | `ceremonies.mass` / `.brideParty` / `.groomParty` | title, time, date (`2030-03-24`), venue, address, map link |
 | `text` | the longer passages: invitation line, our story, foreword, RSVP lead |
-| `images` | file names under `img/` |
+| `images` | one key per picture in the page; see below |
 | `form` | the Apps Script endpoint and shared secret |
 
 Change a `date` and the weekday, the lunar date, the calendar month and the three
@@ -22,8 +22,32 @@ its place, so a couple with one parent to name does not get a stray "Con ông :"
 
 Keys and comments are English throughout; only the values shown on screen are Vietnamese.
 
+`index.html` is generated. Editing it is wasted work: the next build overwrites the file,
+and that is the only thing the build overwrites. `data.js` is yours and is never touched.
+
 `index.html` loads `data.js` with a plain script tag rather than `fetch`, so opening the
 page straight off the disk still works; `fetch` is blocked on `file://` URLs.
+
+### Pictures
+
+Every picture in the page has a key under `images`, listed in `img-keys.html` beside the
+photo it currently holds. Open that file in a browser, find the one you want to change,
+copy its key.
+
+```js
+"images": {
+  "SECTION1": "img/cover.jpg",            // every screen size
+  "SECTION1.mobile": "img/cover-narrow.jpg"  // under 768px, optional
+}
+```
+
+A key left out, or set to an empty string, keeps the picture the design ships, including
+the separate crop it uses on a phone. Add `.mobile` only when you want a different picture
+on a narrow screen; without it the one picture serves both.
+
+Keys look like `SECTION1` for a backdrop, `B_IMAGE51` for a single image, `GALLERY1[3]`
+for one slide of the album with `GALLERY1[3].thumb` for its strip thumbnail, and `DOOR`
+for the two halves of the cover.
 
 The page carries `<meta name="robots" content="noindex, nofollow">`, so search engines
 leave it alone and only people given the link find it. Do not add a `robots.txt` rule as
@@ -84,8 +108,9 @@ Then repo Settings → Pages → branch `main`, folder `/ (root)`.
 ## Layout
 
 ```
-index.html        the page, generated; the element-id maps live here
+index.html        the page, generated; never edit it
 data.js           the content: names, ceremonies, photos, form settings
+img-keys.html     generated; every picture key beside the picture it holds
 img/              176 images
 media/            background-music.mp3
 apps-script.gs    paste into Google Apps Script

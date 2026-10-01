@@ -10,14 +10,14 @@ window.__AK_DATA__ = {
     "father": "Gioan Đinh Quốc Sử",
     "mother": "Maria Phạm Thị Mơ",
     "home": "Xã Quảng Sơn, Tỉnh Lâm Đồng",
-    "intro": "Là người con gái mang trong mình sự giản dị và tinh tế. Không ồn ào, không cầu kỳ, cô chọn cách sống chậm rãi để cảm nhận cuộc đời một cách trọn vẹn.",
+    "intro": "• Giới thiệu: Sỏi tiếng Trung chính hiệu, sở hữu kho từ vựng phong phú, có thể dịch mọi văn bản phức tạp\n• Đặc điểm nhận dạng: Đam mê phim cổ trang, yêu thích vẻ đẹp của những nét chữ và các thanh điệu nhẹ nhàng. Dung lượng pin sinh học: Tràn trề năng lượng, là trạm sạc không dây di động giúp anh đối diện nạp lại pin ngay lập tức.\n• Kỹ năng đặc biệt: Bắn tiếng Trung như gió, nói câu nào ngọt ngào câu đấy. Có năng lực hóa giải mọi logic bằng ánh mắt.\n• Kinh nghiệm vận hành: 3 năm làm quản lý độc quyền. Luôn biết cách chốt mọi hợp đồng.\n• Chỉ số quyền lực: 99.9%. Nắm giữ \"master key\".\n• Trạng thái hiện tại: Đã ký duyệt bản hợp đồng hiệu lực mãi mãi với VanThuan.",
     "quote": "Cái gọi là duyên phận, chính là trong ngàn vạn người gặp được người cần gặp, không sớm một bước cũng không muộn một bước."
   },
   "groom": {
     "name": "Văn Thuận",
     "mother": "Maria Ngô Thị Lan`",
     "home": "Xã Phú Xuân, Tỉnh Đăk Lăk",
-    "intro": "Là một chàng trai vui vẻ, hòa đồng và luôn mang đến năng lượng tích cực cho mọi người xung quanh.",
+    "intro": "• Giới thiệu: Coder chính hiệu, dành cả thanh xuân để debug hệ thống.\n• Đặc điểm nhận dạng: Ưa chuộng mọi thứ có logic rõ ràng. Pin tụt cực nhanh nếu bị buộc phải hướng ngoại. Khi pin yếu, tự động kích hoạt chế độ \"trốn vào góc riêng\" để sạc lại năng lượng.\n• Kỹ năng đặc biệt: Tìm ra lỗi hệ thống siêu nhanh. Riêng vấn đề của cánh đối diện thì chắc cần dành cả đời để phân tích và hiểu.\n• Kinh nghiệm: Xây dựng thành công mối quan hệ trong suốt 3 năm qua. Hệ thống hoạt động mượt mà sau rất nhiều lần sửa lỗi (và sửa sai) cùng nhau và chuẩn bị phát hành bản chính thức.\n• Chỉ số nguy hiểm: 0%. Cực kỳ lành tính, dễ nuôi, chỉ cần cho ăn đầy đủ và cấp đủ Wi-Fi là được.\n• Trạng thái hiện tại: Status code: 200 OK (Đã kết nối thành công và trọn đời với ThuyThanh).",
     "quote": "Mỗi ngày thức dậy bạn nghĩ đến một ai đó, trước khi đi ngủ bạn nghĩ đến một ai đó. Đó là một ngày trọn vẹn."
   },
   "ceremonies": {
@@ -60,19 +60,19 @@ window.__AK_DATA__ = {
   },
   "images": {
     "_note": "Swap a file in img/ and point at it here. SECTION1 is the cover, B_IMAGE51 the groom, B_IMAGE52 the bride, IMAGE14-22 the album.",
-    "SECTION1": "img/b027.jpg",
+    "SECTION1": "img/6E7A0968.png",
     "B_IMAGE50": "img/a73.jpg",
-    "B_IMAGE51": "img/a39.jpg",
-    "B_IMAGE52": "img/a40.jpg",
-    "V_IMAGE57": "img/v009.jpg",
-    "IMAGE14": "img/b084.jpg",
-    "IMAGE15": "img/b056.jpg",
-    "IMAGE16": "img/b054.jpg",
-    "IMAGE17": "img/b083.jpg",
-    "IMAGE18": "img/b055.jpg",
-    "IMAGE19": "img/b053.jpg",
-    "IMAGE20": "img/b081.jpg",
-    "IMAGE21": "img/b080.jpg",
-    "IMAGE22": "img/b082.jpg"
+    "B_IMAGE51": "img/6E7A1363-d.png",
+    "B_IMAGE52": "img/6E7A1333-d.png",
+    "V_IMAGE57": "img/psd-phong-trang.jpg",
+    "IMAGE14": "img/6E7A0968-m.png",
+    "IMAGE15": "img/6E7A1307.jpg",
+    "IMAGE16": "img/6E7A1125.jpg",
+    "IMAGE17": "img/6E7A1421.jpg",
+    "IMAGE18": "img/6E7A1461.jpg",
+    "IMAGE19": "img/psd-phong-trang.jpg",
+    "IMAGE20": "img/6E7A0744-d.png",
+    "IMAGE21": "img/6E7A1033.jpg",
+    "IMAGE22": "img/6E7A1013-d.png"
   }
 };
