@@ -18,6 +18,9 @@ sees is in that one block:
 Change a `date` and the weekday, the lunar date, the calendar month and the three
 markers on it are all recalculated. Nothing else needs touching.
 
+Leave a parent's name empty and its line disappears, with the remaining one centred in
+its place, so a couple with one parent to name does not get a stray "Con ông :".
+
 Keys and comments are English throughout; only the values shown on screen are Vietnamese.
 
 ## Collecting RSVPs and wishes in a Google Sheet

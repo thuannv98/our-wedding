@@ -2679,6 +2679,12 @@ body{margin:0;overflow-x:hidden;color:rgb(51,45,36);font-family:Quicksand,sans-s
   #B_PARAGRAPH84>.ladi-paragraph,#B_PARAGRAPH85>.ladi-paragraph,
   #B_PARAGRAPH86>.ladi-paragraph,#B_PARAGRAPH87>.ladi-paragraph{
     font-size:1.2rem!important;line-height:1.95!important;text-align:center!important}
+  /* the parent lines keep a two-line slot and sit centred in it, so leaving one name out
+     of the data puts the other in the middle instead of hanging at the top */
+  #B_PARAGRAPH85,#B_PARAGRAPH87{height:75px!important}
+  #B_PARAGRAPH85>.ladi-paragraph,#B_PARAGRAPH87>.ladi-paragraph{
+    height:100%!important;display:flex!important;flex-direction:column!important;
+    align-items:center!important;justify-content:center!important}
   #B_GROUP23,#B_GROUP24{left:130px!important}
   #B_GROUP21,#B_GROUP22{left:540px!important}
   #B_GROUP23,#B_GROUP24,#B_GROUP21,#B_GROUP22{top:1024px!important;transform:scale(1.0)}
@@ -2707,6 +2713,9 @@ body{margin:0;overflow-x:hidden;color:rgb(51,45,36);font-family:Quicksand,sans-s
   #B_SECTION_MOI{height:1080px!important}
 }
 @media (max-width:767px){
+  #B_PARAGRAPH85,#B_PARAGRAPH87{height:44px!important}
+  #B_PARAGRAPH85>.ladi-paragraph,#B_PARAGRAPH87>.ladi-paragraph{
+    height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
   #V_GROUP58{top:470px!important}
   #V_GROUP54{top:710px!important}
   #V_GROUP56{top:950px!important}
@@ -4230,9 +4239,15 @@ window.__AK_TEXT__ = {
   "B_HEADLINE38": "{groom.name}",
   "B_HEADLINE39": "{bride.name}",
   "B_PARAGRAPH84": "Tư gia : {groom.home}",
-  "B_PARAGRAPH85": "Con ông : {groom.father}\nCon bà : {groom.mother}",
+  "B_PARAGRAPH85": [
+    "Con ông : {groom.father}",
+    "Con bà : {groom.mother}"
+  ],
   "B_PARAGRAPH86": "Tư gia : {bride.home}",
-  "B_PARAGRAPH87": "Con ông : {bride.father}\nCon bà : {bride.mother}",
+  "B_PARAGRAPH87": [
+    "Con ông : {bride.father}",
+    "Con bà : {bride.mother}"
+  ],
   "PARAGRAPH36": "{text.ourStory}",
   "PARAGRAPH48": "{text.foreword}",
   "V_PARAGRAPH97": "{text.rsvpLead}",
@@ -4745,14 +4760,23 @@ window.__AK_EVENTS__ = {"mass": ["V_PARAGRAPH92", "V_PARAGRAPH93", "V_BUTTON10"]
   function lookup(path) {
     return path.split(".").reduce(function (o, k) { return o && o[k]; }, D);
   }
+  function fill(tpl, keep) {
+    var blank = false;
+    var out = tpl.replace(/\{([\w.]+)\}/g, function (_, p) {
+      var v = lookup(p);
+      if (v === undefined || String(v).trim() === "") blank = true;
+      return v === undefined ? "" : v;
+    });
+    return (keep && blank) ? null : out;
+  }
   Object.keys(window.__AK_TEXT__ || {}).forEach(function (id) {
     var node = textNode(id);
     if (!node) return;
-    var out = window.__AK_TEXT__[id].replace(/\{([\w.]+)\}/g, function (_, p) {
-      var v = lookup(p);
-      return v === undefined ? "" : v;
-    });
-    node.innerHTML = out.split("\n").map(esc).join("<br>");
+    var tpl = window.__AK_TEXT__[id];
+    var lines = Array.isArray(tpl)
+      ? tpl.map(function (t) { return fill(t, true); }).filter(function (t) { return t !== null; })
+      : String(fill(tpl, false)).split("\n");
+    node.innerHTML = lines.map(esc).join("<br>");
   });
 
   /* ---- 2. the three ceremonies; weekday is derived, never typed ---- */
