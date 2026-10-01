@@ -54,6 +54,10 @@ Then repo Settings → Pages → branch `main`, folder `/ (root)`.
 ```
 index.html        the whole page, including the data block
 img/              176 images
-media/            background music
+media/            background-music.mp3
 apps-script.gs    paste into Google Apps Script
 ```
+
+File and folder names are English. The only Vietnamese left anywhere is the wording a
+guest reads: the invitation copy, the button labels, the toast messages, and the two
+sheet tabs.
