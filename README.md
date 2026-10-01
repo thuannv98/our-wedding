@@ -23,6 +23,10 @@ its place, so a couple with one parent to name does not get a stray "Con ông :"
 
 Keys and comments are English throughout; only the values shown on screen are Vietnamese.
 
+The page carries `<meta name="robots" content="noindex, nofollow">`, so search engines
+leave it alone and only people given the link find it. Do not add a `robots.txt` rule as
+well: blocking the crawl stops that tag being read, which is the opposite of the point.
+
 ## Collecting RSVPs and wishes in a Google Sheet
 
 1. Create a Google Sheet with a **personal** Google account
