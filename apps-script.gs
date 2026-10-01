@@ -19,10 +19,15 @@
  *
  * To check a deployment from a terminal, with SECRET as its own value:
  *
- *   curl -sL -X POST "<url>" -d secret=<SECRET> -d kind=wish -d name=Test -d wish=hi
+ *   curl -sL "<url>" -d secret=<SECRET> -d kind=ping
  *
- * It answers "ok" or names what it rejected. A browser visit answers nothing at all,
- * which is also what a request with the wrong secret gets.
+ * It answers "ok: <sheet name>", or names what it rejected. A browser visit answers
+ * nothing at all, which is also what a request with the wrong secret gets.
+ *
+ * Leave out -X POST. A successful run answers 302 to script.googleusercontent.com,
+ * which serves the output over GET only; -X POST forces the method through the
+ * redirect and earns a 405 dressed up as a Google Drive "can't open the file" page.
+ * -d already makes it a POST, and curl then switches to GET for the redirect.
  *
  * The sheet stays private. This script runs as you, so it may write to it; a guest
  * can only invoke the script, and the script only ever appends a row.

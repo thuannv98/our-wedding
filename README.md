@@ -60,12 +60,17 @@ not **New deployment**: that issues a different URL and `data.js` would need upd
 ### Checking it works
 
 ```bash
-curl -sL -X POST "<your url>" -d secret=<SECRET> -d kind=ping
+curl -sL "<your url>" -d secret=<SECRET> -d kind=ping
 ```
 
 It answers `ok: <sheet name>`, or names what it rejected (`bad-kind`, `bad-name`,
 `too-fast`, `error: …`). An empty answer means the secret did not match. Apps Script
 returns 200 even for its own errors, so the body is the only thing worth reading.
+
+Do not add `-X POST`. A successful run answers 302 to `script.googleusercontent.com`,
+which serves the output over GET only; `-X POST` forces the method through the redirect
+and earns a 405 that renders as a Google Drive "can't open the file" page. `-d` already
+makes the request a POST, and curl switches to GET for the redirect on its own.
 
 ## Deploying
 
