@@ -62,7 +62,7 @@ window.__AK_DATA__ = {
     "_note": "Swap a file in img/ and point at it here. SECTION1 is the cover, B_IMAGE51 the groom, B_IMAGE52 the bride, IMAGE14-22 the album.",
     "SECTION1": "img/6E7A0968.png",
     "B_IMAGE50": "img/a73.jpg",
-    "B_IMAGE51": "img/6E7A1363-d.png",
+    "B_IMAGE51": "img/toc5.jpg",
     "B_IMAGE52": "img/6E7A1333-d.png",
     "V_IMAGE57": "img/psd-phong-trang.jpg",
     "IMAGE14": "img/6E7A0968-m.png",
