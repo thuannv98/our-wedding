@@ -6,45 +6,44 @@
    Change a ceremony date and the weekday, the lunar date and the calendar follow it. */
 window.__AK_DATA__ = {
   "bride": {
-    "name": "Như Ý",
-    "father": "Đỗ Xuân Hợp",
-    "mother": "Nguyễn Cao Kỳ Duyên",
-    "home": "Phường Ninh Xá, TP Bắc Ninh, Tỉnh Bắc Ninh",
+    "name": "Thanh Thuỳ",
+    "father": "Gioan Đinh Quốc Sử",
+    "mother": "Maria Phạm Thị Mơ",
+    "home": "Xã Quảng Sơn, Tỉnh Lâm Đồng",
     "intro": "Là người con gái mang trong mình sự giản dị và tinh tế. Không ồn ào, không cầu kỳ, cô chọn cách sống chậm rãi để cảm nhận cuộc đời một cách trọn vẹn.",
     "quote": "Cái gọi là duyên phận, chính là trong ngàn vạn người gặp được người cần gặp, không sớm một bước cũng không muộn một bước."
   },
   "groom": {
-    "name": "Phú Quý",
-    "father": "Nguyễn Xuân Quyết",
-    "mother": "Nguyễn Thị Huệ",
-    "home": "Phường Lạc Viên, Quận Ngô Quyền, Hải Phòng",
+    "name": "Văn Thuận",
+    "mother": "Maria Ngô Thị Lan`",
+    "home": "Xã Phú Xuân, Tỉnh Đăk Lăk",
     "intro": "Là một chàng trai vui vẻ, hòa đồng và luôn mang đến năng lượng tích cực cho mọi người xung quanh.",
     "quote": "Mỗi ngày thức dậy bạn nghĩ đến một ai đó, trước khi đi ngủ bạn nghĩ đến một ai đó. Đó là một ngày trọn vẹn."
   },
   "ceremonies": {
     "mass": {
       "title": "Thánh lễ Hôn phối",
-      "time": "11:30",
-      "date": "2030-03-24",
-      "venue": "Tư gia nhà Trai",
-      "address": "Phường Lạc Viên, Quận Ngô Quyền, Hải Phòng",
-      "map": "https://maps.app.goo.gl/FT3USsA8pj3c6tCV8"
+      "time": "05:00",
+      "date": "2026-10-23",
+      "venue": "Giáo điểm An Phước, Giáo phận Ban Mê Thuột",
+      "address": "Xã Quãng Sơn, Tỉnh Lâm Đồng",
+      "map": "https://maps.app.goo.gl/W2VfEaqh4KzxN4De9"
     },
     "brideParty": {
       "title": "Tiệc Cưới Nhà Gái",
-      "time": "09:00",
-      "date": "2030-03-24",
+      "time": "11:00",
+      "date": "2026-10-23",
       "venue": "Tư gia nhà Gái",
-      "address": "Phường Ninh Xá, TP Bắc Ninh, Tỉnh Bắc Ninh",
-      "map": "https://maps.app.goo.gl/3B5AxdK5chbLWGtU9"
+      "address": "Xã Quảng Sơn, Tỉnh Lâm Đồng",
+      "map": "https://maps.app.goo.gl/HTNRbQBjh2NW2HZRA"
     },
     "groomParty": {
       "title": "Tiệc Cưới Nhà Trai",
       "time": "11:00",
-      "date": "2030-03-25",
+      "date": "2026-10-25",
       "venue": "Tư gia nhà Trai",
-      "address": "Phường Lạc Viên, Quận Ngô Quyền, Hải Phòng",
-      "map": "https://maps.app.goo.gl/FT3USsA8pj3c6tCV8"
+      "address": "Xã Phú Xuân, Tỉnh Đăk Lăk",
+      "map": "https://maps.app.goo.gl/C5itcA5evgdDsJNbA"
     }
   },
   "text": {
@@ -56,8 +55,8 @@ window.__AK_DATA__ = {
   },
   "form": {
     "_note": "Paste the Apps Script web app URL into endpoint. Leave it empty and the forms only store answers in the guest's own browser.",
-    "endpoint": "",
-    "secret": "change-this-string"
+    "endpoint": "https://script.google.com/macros/s/AKfycbwva6Q3biyfcV4cw8eKC5gb-zyWpqIZWM_fJaGD98MgKkAd6CwXL23aItEl_tq6JjpAfw/exec",
+    "secret": "2310vanthuanthanhthuy"
   },
   "images": {
     "_note": "Swap a file in img/ and point at it here. SECTION1 is the cover, B_IMAGE51 the groom, B_IMAGE52 the bride, IMAGE14-22 the album.",
