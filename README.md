@@ -4,8 +4,7 @@ A static invitation. No server, no build step: push it to GitHub Pages and it ru
 
 ## Editing the content
 
-Open `index.html` and find `window.__AK_DATA__` near the bottom. Everything a reader
-sees is in that one block:
+Open `data.js`. It is the only file to edit, and everything a reader sees is in it:
 
 | Key | What it holds |
 |---|---|
@@ -22,6 +21,9 @@ Leave a parent's name empty and its line disappears, with the remaining one cent
 its place, so a couple with one parent to name does not get a stray "Con ông :".
 
 Keys and comments are English throughout; only the values shown on screen are Vietnamese.
+
+`index.html` loads `data.js` with a plain script tag rather than `fetch`, so opening the
+page straight off the disk still works; `fetch` is blocked on `file://` URLs.
 
 The page carries `<meta name="robots" content="noindex, nofollow">`, so search engines
 leave it alone and only people given the link find it. Do not add a `robots.txt` rule as
