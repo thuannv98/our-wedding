@@ -119,7 +119,7 @@ window.WEDDING = {
   "text": {
     "openInvite": "Chạm để mở thiệp",
     "saveTheDate": "Save The Date",
-    "ourStory": "Trăm triệu hạt mưa rơi, không hạt nào rơi nhầm chỗ. Tất cả người ta từng gặp, không một người nào là ngẫu nhiên, người đến bởi nợ đầy, người đi bởi duyên cạn, mọi thứ đều là duyên phận an bài, chúng ta trở thành vợ chồng cũng chính là vì đủ duyên",
+    "ourStory": "Một ngày thu, anh chàng Dev vô tư dùng chút kiến thức IT giúp đỡ cô sinh viên Thùy Thanh. Sợi dây duyên số bắt đầu, đưa anh trở thành tân Dự trưởng ngay trước thềm Trung Thu.\nNhững ngày cùng phục vụ, gói quà, làm lồng đèn đoạt giải đã nhen nhóm cho một tình yêu kỳ lạ. Dù đội mưa hứng nắng, hai đứa vẫn cứ cười vô tư.\nHơn 3 năm qua đi với đủ vui buồn, mâu thuẫn và thấu hiểu. Hai đứa Dự trưởng ngày nào giờ đã là Huynh trưởng. Mùa trung thu năm nay, chúng mình chính thức về một nhà, sẵn sàng cùng người thương xây dựng tổ ấm nhỏ.",
     "invitation": "Đến hiệp dâng Thánh lễ Hôn phối và tham dự buổi tiệc chung vui cùng gia đình chúng mình",
     "foreword": "Bữa tiệc được nâng niu, chỉn chu từng chi tiết đang chờ bạn đến tận hưởng khoảnh khắc thiêng liêng nhất trong cuộc đời chúng mình. Sẽ trọn vẹn hơn khi bạn cùng chúng mình ghi lại ký ức vô giá này.",
     "rsvpLead": "Sự có mặt của bạn là niềm vui lớn đối với chúng mình. Vui lòng xác nhận để buổi tiệc được chuẩn bị thật chỉn chu nhé!"

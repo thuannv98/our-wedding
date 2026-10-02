@@ -160,6 +160,11 @@ check("the cover keeps the short names",
   check("and it is not left at a placeholder", /Wedding Invitation|Thiệp cưới/.test(desc?.[1] ?? ""), false);
 }
 
+// The story is three paragraphs, and it reaches the page through data-lines: written as
+// one data-text it would all run together in a single block.
+check("the story is set as three paragraphs",
+  d.querySelectorAll(".story__text p").length, 3);
+
 check("both names close the page", text(d, ".thanks__names"), `${W.groom.name} - ${W.bride.name}`);
 
 // motion: nothing may be left invisible, and reduced motion turns it all off
