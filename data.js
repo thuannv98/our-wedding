@@ -7,7 +7,7 @@
 window.__AK_DATA__ = {
   "bride": {
     "name": "Thanh Thuỳ",
-    "father": "Gioan Đinh Quốc Sử",
+    "father": "Simon Nguyễn Văn Thành",
     "mother": "Maria Phạm Thị Mơ",
     "home": "Xã Quảng Sơn, Tỉnh Lâm Đồng",
     "intro": "• Giới thiệu: Sỏi tiếng Trung chính hiệu, sở hữu kho từ vựng phong phú, có thể dịch mọi văn bản phức tạp\n• Đặc điểm nhận dạng: Đam mê phim cổ trang, yêu thích vẻ đẹp của những nét chữ và các thanh điệu nhẹ nhàng. Dung lượng pin sinh học: Tràn trề năng lượng, là trạm sạc không dây di động giúp anh đối diện nạp lại pin ngay lập tức.\n• Kỹ năng đặc biệt: Bắn tiếng Trung như gió, nói câu nào ngọt ngào câu đấy. Có năng lực hóa giải mọi logic bằng ánh mắt.\n• Kinh nghiệm vận hành: 3 năm làm quản lý độc quyền. Luôn biết cách chốt mọi hợp đồng.\n• Chỉ số quyền lực: 99.9%. Nắm giữ \"master key\".\n• Trạng thái hiện tại: Đã ký duyệt bản hợp đồng hiệu lực mãi mãi với VanThuan.",
