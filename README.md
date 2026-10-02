@@ -1,100 +1,78 @@
 # Our wedding
 
-A static invitation. No server, no build step: push it to GitHub Pages and it runs.
+A static invitation. No server, no build step, no dependencies: push it to GitHub Pages
+and it runs. Open `index.html` off the disk and it runs there too.
 
 ## Editing the content
 
-Open `data.js`. It is the only file to edit, and everything a reader sees is in it:
+Everything a guest reads is in **`data.js`**, and nothing else needs touching.
 
 | Key | What it holds |
 |---|---|
-| `bride`, `groom` | name, parents, home town, short intro, quote |
-| `ceremonies.mass` / `.brideParty` / `.groomParty` | title, time, date (`2030-03-24`), venue, address, map link |
-| `text` | the longer passages: invitation line, our story, foreword, RSVP lead |
-| `images` | one key per picture in the page; see below |
+| `pageTitle` | the browser tab |
+| `cover` | the opening photo and the line above the names |
+| `groom`, `bride` | name, parents, home, their photo, intro, quote, portrait gallery |
+| `coupleBackdrop` | the arch behind the two of them |
+| `ceremonies` | a list: title, time, date, venue, address, map link, photo |
+| `weddingDate` | the month the calendar shows |
+| `album` | the album, in order |
+| `text` | the longer passages |
+| `wishRelations`, `wishSuggestions` | what the guest book offers |
 | `form` | the Apps Script endpoint and shared secret |
 
-Change a `date` and the weekday, the lunar date, the calendar month and the three
-markers on it are all recalculated. Nothing else needs touching.
+Names say what they are: `album` is the album, `groom.photo` is his picture. Add a photo
+to `album` and a tile appears. Add a fourth ceremony and a fourth card appears, with its
+own option in the RSVP. Change a date and its weekday, its lunar date and its mark on the
+calendar all follow.
 
-Leave a parent's name empty and its line disappears, with the remaining one centred in
-its place, so a couple with one parent to name does not get a stray "Con ông :".
+Leave a parent's name empty and that line disappears, with the other centred in its place.
 
-Keys and comments are English throughout; only the values shown on screen are Vietnamese.
+## How it fits together
 
-`index.html` is generated. Editing it is wasted work: the next build overwrites the file,
-and that is the only thing the build overwrites. `data.js` is yours and is never touched.
-
-`index.html` loads `data.js` with a plain script tag rather than `fetch`, so opening the
-page straight off the disk still works; `fetch` is blocked on `file://` URLs.
-
-### Pictures
-
-Every picture in the page has a key under `images`, listed in `img-keys.html` beside the
-photo it currently holds. Open that file in a browser, find the one you want to change,
-copy its key.
-
-```js
-"images": {
-  "SECTION1": "img/cover.jpg",            // every screen size
-  "SECTION1.mobile": "img/cover-narrow.jpg"  // under 768px, optional
-}
+```
+index.html      the structure, and nothing else: no styles, no content, no logic
+data.js         everything a guest reads
+css/tokens.css  every colour, size, font and spacing, declared once
+css/base.css    element defaults
+css/layout.css  the section rhythm and the alternating grounds
+css/components.css   buttons, cards, forms, calendar, album, dialogs
+css/sections.css     what is particular to one section
+js/             one module per thing the page does
+test/           node test/page.test.mjs, node test/discipline.test.mjs
 ```
 
-A key left out, or set to an empty string, keeps the picture the design ships, including
-the separate crop it uses on a phone. Add `.mobile` only when you want a different picture
-on a narrow screen; without it the one picture serves both.
+Two rules hold the shape, and `test/discipline.test.mjs` fails if either breaks: a colour
+or a font is only ever named in `css/tokens.css`, and `index.html` carries no inline style
+and no style block. The same test checks that every picture named in `data.js` exists and
+that no key in it has gone unread.
 
-Keys look like `SECTION1` for a backdrop, `B_IMAGE51` for a single image, `GALLERY1[3]`
-for one slide of the album with `GALLERY1[3].thumb` for its strip thumbnail, and `DOOR`
-for the two halves of the cover.
-
-The page carries `<meta name="robots" content="noindex, nofollow">`, so search engines
-leave it alone and only people given the link find it. Do not add a `robots.txt` rule as
-well: blocking the crawl stops that tag being read, which is the opposite of the point.
+Sections alternate white and pale on their own, from `:nth-of-type`. Reorder them in the
+HTML and the alternation follows; none of them names its own background.
 
 ## Collecting RSVPs and wishes in a Google Sheet
 
 1. Create a Google Sheet with a **personal** Google account
 2. Extensions → Apps Script, paste all of `apps-script.gs`
-3. Change `SECRET` to a string of your own
-4. Deploy → New deployment → Web app
-   - Execute as: **Me**
-   - Who has access: **Anyone**
-5. Copy the URL into `form.endpoint` in `data.js`
-6. Put the same `SECRET` into `form.secret`
+3. Change `SECRET` to a string of your own, and put the same one in `form.secret`
+4. Deploy → New deployment → Web app, Execute as **Me**, access **Anyone**
+5. Copy the URL into `form.endpoint`
 
-Google will warn that the app is unverified. That warning is for apps asking *other*
-people for access; here only you authorise it, and the script only touches your own
-sheet. Click **Advanced → Go to (project name)** to continue.
+After every later edit to the script: Deploy → **Manage deployments** → the pencil →
+Version: **New version**. A deployment keeps serving the version it was created from.
 
-The sheet stays private. Guests never authenticate; they only invoke the script, and the
-script only appends a row. Tabs `Xác nhận` and `Lời chúc` are created on first use.
-
-Leave `endpoint` empty and the forms simply keep answers in the guest's own browser.
-
-### After every edit to the script
-
-Deploy → **Manage deployments** → the pencil → Version: **New version** → Deploy.
-
-A deployment keeps serving the version it was created from, so editing the code alone
-changes nothing and the URL answers `Script function not found: doPost`. Use the pencil,
-not **New deployment**: that issues a different URL and `data.js` would need updating.
-
-### Checking it works
+Check it with:
 
 ```bash
 curl -sL "<your url>" -d secret=<SECRET> -d kind=ping
 ```
 
-It answers `ok: <sheet name>`, or names what it rejected (`bad-kind`, `bad-name`,
-`too-fast`, `error: …`). An empty answer means the secret did not match. Apps Script
-returns 200 even for its own errors, so the body is the only thing worth reading.
+It answers `ok: <sheet name>`, or names what it rejected. No `-X POST`: a successful run
+redirects to a URL that serves over GET only, and forcing the method earns a 405 dressed
+up as a Google Drive error page.
 
-Do not add `-X POST`. A successful run answers 302 to `script.googleusercontent.com`,
-which serves the output over GET only; `-X POST` forces the method through the redirect
-and earns a 405 that renders as a Google Drive "can't open the file" page. `-d` already
-makes the request a POST, and curl switches to GET for the redirect on its own.
+The wishes are read back onto the page; the RSVP answers never are. Anything the page can
+fetch, any visitor can fetch, so who is coming and what they said privately stays in the
+sheet. Put an `x` in the `Ẩn` column to drop a wish from the page.
 
 ## Deploying
 
@@ -102,20 +80,12 @@ makes the request a POST, and curl switches to GET for the redirect on its own.
 git add -A && git commit -m "update" && git push
 ```
 
-Then repo Settings → Pages → branch `main`, folder `/ (root)`.
-`.nojekyll` is already present so GitHub serves every folder as-is.
+Then Settings → Pages → branch `main`, folder `/ (root)`. `.nojekyll` is already there.
 
-## Layout
+The page carries `noindex, nofollow`, so search engines leave it alone and only people
+given the link find it. That is not a lock: anyone with the link can open it.
 
-```
-index.html        the page, generated; never edit it
-data.js           the content: names, ceremonies, photos, form settings
-img-keys.html     generated; every picture key beside the picture it holds
-img/              176 images
-media/            background-music.mp3
-apps-script.gs    paste into Google Apps Script
-```
+## Still to do
 
-File and folder names are English. The only Vietnamese left anywhere is the wording a
-guest reads: the invitation copy, the button labels, the toast messages, and the two
-sheet tabs.
+The photos from the original template have been replaced, but check `img/` for any that
+remain before sending the link to guests.

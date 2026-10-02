@@ -1,0 +1,175 @@
+/* Xác Nhận Tham Dự and the few words that follow it, placed as percentages of the
+   960x856 and 960x340 boxes the old page drew them on. */
+
+.rsvp { padding: 0 var(--gutter); }
+.rsvp__stage { position: relative; aspect-ratio: 960 / 856; }
+.rsvp__stage > * { position: absolute; margin: 0; }
+
+/* the panel is the backdrop, so it names its layer and the rest sit above it */
+.rsvp__stage > * { z-index: 1; }
+.rsvp__panel {
+  z-index: 0;
+  left: 2.727%; top: 5.421%; width: 94.258%; height: 86.916%;
+  background: var(--nen-trang);
+  border-radius: 24px;
+  box-shadow: var(--panel-shadow);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.rsvp__stage:hover .rsvp__panel {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+/* the round portrait: a white ring rather than the hard maroon one it shipped with */
+.rsvp__photo {
+  left: 39.552%; top: 6.957%; width: 20.609%; height: 23.113%;
+  object-fit: cover; object-position: center top;
+  border-radius: var(--radius-pill);
+  border: 5px solid var(--frame);
+  box-shadow: 0 6px 18px var(--photo-lift);
+}
+
+.rsvp__head { left: 24.271%; top: 30.070%; width: 51.458%; height: 9.546%; }
+.rsvp__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  line-height: 1.15;
+  color: var(--gold);
+  text-align: center;
+}
+.rsvp__divider {
+  position: absolute; left: 29.757%; top: 87.760%; width: 40.486%; height: 12.240%;
+  color: var(--gold-soft);
+}
+
+.rsvp__lead {
+  left: 2.721%; top: 41.226%; width: 94.271%;
+  font-size: 16px; line-height: 1.6; color: var(--ink); text-align: center;
+}
+
+.rsvp__form { left: 12.950%; top: 49.465%; width: 74.099%; height: 30.991%; }
+.rsvp__form > * { position: absolute; margin: 0; }
+.rsvp__field--name { left: 0; top: 0; width: 65.933%; height: 17.561%; }
+.rsvp__field--party { left: 67.835%; top: 0; width: 32.166%; height: 17.561%; }
+.rsvp__field--attending { left: 0; top: 21.952%; width: 65.933%; height: 18.848%; border: 0; padding: 0; }
+.rsvp__field--guests { left: 67.885%; top: 21.952%; width: 32.066%; height: 17.339%; }
+.rsvp__field--message { left: 0; top: 44.179%; width: 100%; height: 28.977%; }
+.rsvp__submit { left: 0; top: 82.439%; width: 100%; height: 17.561%; }
+.rsvp__done { left: 0; top: 40%; width: 100%; text-align: center; }
+
+/* Every field wears the same cream box with a thin gold edge. The radios are left out
+   of the sizing: an earlier rule sized every input to fill its box and blew the two
+   circles up to the full width of the row. */
+.rsvp__field {
+  border: 1px solid var(--field-edge);
+  border-radius: 12px;
+  background: var(--field-bg);
+  overflow: hidden;
+}
+.rsvp__field:focus-within {
+  border-color: var(--gold-soft);
+  box-shadow: 0 0 0 3px var(--field-ring);
+}
+.rsvp__field > input, .rsvp__field > select, .rsvp__field > textarea {
+  width: 100%; height: 100%;
+  padding: 0.5em 0.9em;
+  border: 0; background: transparent; outline: none;
+  font-size: 15px; color: var(--ink);
+}
+.rsvp__field > textarea { resize: none; padding-top: 0.7em; }
+.rsvp__field > select { appearance: none; cursor: pointer; }
+
+.rsvp__field--attending {
+  display: flex; align-items: center; gap: 18px;
+  padding: 12px 0.9em;
+  font-size: 14px;
+}
+.rsvp__field--attending label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.rsvp__field--attending input { width: 15px; height: 15px; flex: 0 0 auto; accent-color: var(--gold-soft); }
+
+
+
+.rsvp__back {
+  left: 12.950%; top: 82.209%; width: 18.542%;
+  font-size: 14px; color: var(--gold); text-decoration: none; text-align: left;
+}
+
+/* a few words before the thank you ----------------------------------------- */
+.foreword__stage { position: relative; aspect-ratio: 960 / 340; }
+.foreword__stage > * { position: absolute; margin: 0; }
+.foreword__title {
+  left: 0; top: 4.118%; width: 100%;
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  line-height: 1.15;
+  color: var(--cover-names);
+  text-align: center;
+}
+.foreword__text {
+  left: 13.906%; top: 32.353%; width: 72.188%;
+  font-size: var(--fs-body); line-height: 1.6;
+  color: var(--cover-ink); text-align: center;
+}
+
+@media (max-width: 767px) {
+  /* both run as ordinary flow on a phone: the fixed boxes do not fit there */
+  .rsvp__stage, .foreword__stage { aspect-ratio: auto; display: grid; gap: var(--space-2); padding-block: var(--space-4); }
+  .rsvp__stage > *, .foreword__stage > *, .rsvp__form > * { position: static; width: auto; height: auto; }
+  .rsvp__panel { display: none; }
+  .rsvp__photo { width: 146px; height: 146px; justify-self: center; }
+  .rsvp__head { height: auto; }
+  .rsvp__divider { position: static; width: 200px; height: 10px; margin: 6px auto 0; display: block; }
+  .rsvp__form { display: grid; gap: var(--space-2); }
+  .rsvp__field > input, .rsvp__field > select { height: 40px; }
+  .rsvp__field > textarea { height: 66px; }
+  .rsvp__submit { height: 40px; }
+  .rsvp__back { text-align: center; }
+}
+
+/* thank you ---------------------------------------------------------------- */
+/* The old page ended with a scrolling band under this, but the section was trimmed to
+   380px and the band sat at 721px, so it never showed. Not carried over. */
+/* The few words and the thank you are one block over one photograph. A real <img>
+   rather than a background, for the same reason the cover uses one, and both layers
+   name themselves so the picture cannot paint over the words it is behind. */
+.closing { position: relative; isolation: isolate; overflow: hidden; padding: 0 var(--gutter); }
+.closing__photo, .closing__scrim { position: absolute; inset: 0; z-index: -1; }
+.closing__photo { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%;   /* their faces, not the dress */ }
+/* the same wash and the same white type the cover uses, so the page opens and closes
+   on one photograph read the same way */
+.closing__scrim { background: var(--cover-scrim); opacity: var(--cover-scrim-alpha); }
+.closing .foreword__title, .closing .foreword__text,
+.closing .thanks__title, .closing .thanks__names {
+  text-shadow: 1px 2px 3px var(--cover-shadow);
+}
+.closing > .container, .closing > .thanks { position: relative; z-index: 1; }
+
+.thanks { padding: 0; }
+.thanks__stage { position: relative; aspect-ratio: 960 / 380; }
+.thanks__stage > * { position: absolute; margin: 0; }
+
+.thanks__mark { left: 47.031%; top: 8.684%; width: 8.021%; height: 20.263%; color: var(--cover-names); }
+.thanks__title {
+  left: 15.938%; top: 23.421%; width: 70.208%;
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  line-height: 1.15;
+  color: var(--cover-names);
+  text-align: center;
+}
+.thanks__names {
+  left: 30.521%; top: 69.211%; width: 41.042%;
+  font-size: 25px; line-height: 1.6; color: var(--cover-ink); text-align: center;
+}
+
+@media (max-width: 767px) {
+  .thanks__stage { aspect-ratio: 420 / 272; }
+  .thanks__mark { left: 45%; top: 7.359%; width: 11.905%; height: auto; aspect-ratio: 1; }
+  .thanks__title { left: 0; top: 17.469%; width: 100%; }
+  .thanks__names { left: 0; top: 62.322%; width: 100%; font-size: 16px; }
+}
+
+@media (max-width: 767px) {
+  /* the two answers stack when there is no room for them side by side */
+  .rsvp__field--attending { flex-wrap: wrap; gap: 6px 18px; }
+}

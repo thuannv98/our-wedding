@@ -1,0 +1,156 @@
+/* Every value the design uses, declared once.
+   Nothing below this file should contain a raw colour, size or font name. */
+
+:root {
+  /* ink and ground */
+  --ink: rgb(51 45 36);
+  --ink-soft: rgb(51 45 36 / 0.62);
+  --gold: rgb(123 79 13);
+  --gold-soft: rgb(176 124 32);
+  --rule: rgb(122 96 54 / 0.3);
+  --mark: rgb(201 168 106 / 0.18);      /* a marked day on the calendar */
+  --mark-ring: rgb(176 124 32 / 0.55);
+  --cal-panel: rgb(255 255 255 / 0.75);
+  --cal-shadow: rgb(94 74 46 / 0.10);
+  --gold-mid: rgb(139 91 19);
+  --cta-bg: rgb(140 137 137);
+  --cta-edge: rgb(63 61 61);
+  --toast-bg: rgb(32 26 22 / 0.94);
+  --toast-ink: #ffffff;
+  --toast-shadow: rgb(0 0 0 / 0.3);
+  --field-bg: #fdf8f1;              /* the confirmation form */
+  --field-edge: rgb(176 124 32 / 0.28);
+  --field-ring: rgb(176 124 32 / 0.16);
+  --dock-grey: rgb(121 113 113);     /* the floating controls */
+  --dock-pulse: rgb(195 29 29 / 0.55);
+  --dock-pulse-out: rgb(195 29 29 / 0);
+  --hy-red: #9a2e2a;
+  /* the words on the red panel, read off the same mark */
+  --door-ink: #f7e7c8;
+  --door-ink-soft: rgb(247 231 200 / 0.55);
+  --door-ink-wash: rgb(247 231 200 / 0.14);                /* read off the double-happiness panel itself */
+  --glow: rgb(176 124 32 / 0.12);       /* the pulse around the music button */
+  --scrim: rgb(34 28 20 / 0.72);        /* behind a dialog */
+  --veil-top: rgb(255 255 255 / 0.55);  /* the wash over the cover photo */
+  --veil-bottom: rgb(255 255 255 / 0.8);
+  --control: rgb(255 255 255 / 0.86);   /* a button floating over an image */
+
+  /* the two grounds the page alternates between. The couple call them "trắng" and
+     "xanh nhạt"; those names are the contract, the values behind them can change. */
+  --nen-trang: #ffffff;
+  --nen-xanh: rgb(255 242 250);
+  --paper: #fdfaf3;             /* anything that should read as paper */
+  --paper-edge: #e8dcc6;
+  --paper-edge-2: #f0e7d6;
+  --paper-fold: #efe5d2;        /* the shaded gutter of an open page */
+  --paper-field: #fffdf8;       /* an input sitting on paper */
+  --roll-1: #d9caad;            /* the rolled spine, dark to light and back */
+  --roll-2: #f3ebda;
+  --roll-3: #e6dac1;
+  --roll-4: #cfbf9f;
+  --roll-shadow: rgb(120 96 58 / 0.22);
+  --spine: rgb(120 96 58 / 0.2);
+  --spine-mid: rgb(120 96 58 / 0.05);
+  --book-lift: rgb(74 58 36 / 0.1);
+  --book-drop: rgb(74 58 36 / 0.22);
+  --arch-shadow: rgb(94 74 46 / 0.14);
+  --photo-drop: 0 8px 20px rgb(80 60 50 / 0.16);
+  --photo-lift: rgb(94 74 46 / 0.18);
+  --line-ink: rgb(0 0 0);          /* the rule under each name */
+
+  /* the three ceremony cards */
+  --card-dark: rgb(66 62 56);
+  --card-ink: rgb(222 222 222);
+  --card-edge: rgb(127 127 127);
+  --card-button: rgb(154 153 153);
+  --card-button-hover: rgb(209 215 218);
+  --card-button-ink: rgb(241 243 244);
+  --frame: #ffffff;        /* the white edge around a photo in the collage */
+  --note-line: #efe6d4;
+  --leaf: #c3cdb4;              /* the sprigs */
+  --leaf-pale: #d6ddcb;
+  --stem: #b9a17a;
+  --ink-faint: rgb(94 74 46 / 0.4);
+  --gold-deep: rgb(150 101 18);
+  --accent: rgb(207 66 66);         /* the names inside the invitation */
+  --accent-strong: rgb(201 47 47);  /* "Thank you!" */
+  --ink-grey: rgb(68 68 68);        /* the foreword and the couple heading */
+  --button-edge: rgb(94 94 94);     /* the two portrait buttons */
+  --button-ink: rgb(37 38 40);
+
+  /* the cover, measured off the page this replaces */
+  --cover-scrim: rgb(51 45 36);     /* the wash over the photo, at half opacity */
+  --cover-scrim-alpha: 0.5;
+  --cover-ink: rgb(255 255 255);
+  --cover-names: rgb(255 246 227);
+  --cover-shadow: rgb(0 0 0);
+  --coral: rgb(255 124 124);        /* the countdown ring and its numbers */
+  --sand: rgb(239 203 132);         /* the labels under them */
+
+  /* type */
+  --font-display: "Dancing Script", "Brush Script MT", cursive;
+  --font-head: "Playfair Display", Georgia, serif;
+  --font-body: Quicksand, -apple-system, "Segoe UI", sans-serif;
+
+  /* one declaration each, fluid between phone and desktop, so there is no second
+     set of sizes in a media query to keep in step */
+  /* the scale as it was settled: titles 3.5rem, body 1.2rem, and 2.5rem / 1rem on a
+     phone. Two values each, switched at the one breakpoint, not interpolated. */
+  --fs-title: 2.5rem;
+  --fs-lead: 1.1rem;
+  --fs-body: 1rem;
+  --fs-small: 0.82rem;
+  --lh-body: 1.75;
+  --lh-tight: 1.2;
+  --tracking-wide: 0.16em;
+
+  /* rhythm */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+  --space-6: 6rem;
+  --section-pad: clamp(3rem, 2rem + 5vw, 6rem);
+  --gutter: clamp(1rem, 0.5rem + 3vw, 2.5rem);
+  --measure: 62ch;              /* comfortable reading width */
+  --container: 960px;      /* the canvas both source pages were drawn on */
+  --container-phone: 420px;
+
+  /* surfaces */
+  --radius-sm: 6px;
+  --radius: 14px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 2px 8px rgb(74 58 36 / 0.1);
+  --shadow: 0 10px 28px rgb(74 58 36 / 0.16);
+  --shadow-lg: 0 22px 50px rgb(74 58 36 / 0.22);
+  --shadow-hover: 0 20px 46px rgb(94 74 46 / 0.19);
+  --panel-shadow: 0 14px 38px rgb(94 74 46 / 0.13);
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --fast: 180ms;
+  --slow: 600ms;
+}
+
+@media (max-width: 767px) {
+  :root {
+    /* The old page left about 13px each side on a 360px screen. The fluid gutter came
+       out at 18.8px there, which took 12px of width off every section and pushed the
+       lines into wrapping. */
+    --gutter: 13px;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --fs-title: 3.5rem;
+    --fs-lead: 1.35rem;
+    --fs-body: 1.2rem;
+    --fs-small: 0.9rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --fast: 0ms; --slow: 0ms; }
+}

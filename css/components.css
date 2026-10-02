@@ -1,0 +1,124 @@
+/* Reusable pieces. Every value comes from tokens.css. */
+
+.card {
+  background: var(--paper);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--space-3);
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.65em 1.6em;
+  border: 1px solid var(--gold-soft);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--gold);
+  font-size: var(--fs-small);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+.btn:hover { background: var(--gold-soft); color: var(--paper); }
+.btn--solid { background: var(--gold); border-color: var(--gold); color: var(--paper); }
+.btn--solid:hover { background: var(--gold-soft); border-color: var(--gold-soft); }
+
+/* forms ------------------------------------------------------------------- */
+.form { display: grid; gap: var(--space-2); }
+.field { display: grid; gap: var(--space-1); margin: 0; }
+.field > label, .field > legend { font-size: var(--fs-small); color: var(--gold); }
+.field input, .field select, .field textarea {
+  width: 100%;
+  padding: 0.6em 0.8em;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  background: var(--nen-trang);
+}
+.field textarea { resize: vertical; }
+.field fieldset, fieldset.field { border: 0; padding: 0; }
+fieldset.field label { font-size: var(--fs-body); display: flex; gap: var(--space-1); align-items: center; }
+p.field--hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }   /* honeypot */
+.form__done { text-align: center; font-family: var(--font-display); font-size: var(--fs-lead); color: var(--gold); }
+
+/* dialogs ------------------------------------------------------------------ */
+dialog { border: 0; padding: 0; color: var(--ink); }
+dialog::backdrop { background: var(--scrim); }
+
+.lightbox { background: none; max-width: 100vw; max-height: 100vh; width: 100%; height: 100%; }
+.lightbox[open] { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--space-2); padding: var(--gutter); }
+.lightbox__img { max-width: 100%; max-height: 86vh; margin-inline: auto; object-fit: contain; border-radius: var(--radius); }
+.lightbox__close { position: absolute; top: var(--gutter); right: var(--gutter); }
+.lightbox__nav--prev::after { content: "‹"; }
+.lightbox__nav--next::after { content: "›"; }
+
+.lightbox__close, .lightbox__nav, .portrait__close {
+  width: 2.4em; height: 2.4em; display: grid; place-items: center;
+  border: 0; border-radius: var(--radius-pill);
+  background: var(--control); color: var(--ink);
+  font-size: var(--fs-lead); line-height: 1; cursor: pointer;
+}
+
+/* the two portrait panels, opened by the buttons in the couple section ------ */
+/* This belongs to the section above it, not beside it: the old page started its content
+   10px down and shared the same ground, so there is no gap to read as a break. */
+.portrait { padding-top: 10px; padding-bottom: var(--space-4); }
+.portrait__body { display: grid; gap: var(--space-4); align-items: center; }
+.portrait__photo {
+  width: 100%; aspect-ratio: 403.9 / 605.9; object-fit: cover;
+  border-radius: 5px; box-shadow: var(--shadow);
+}
+.portrait__words { display: grid; gap: var(--space-2); justify-items: start; }
+.portrait__sprig { width: 85px; height: auto; }
+.portrait__name {
+  font-family: var(--font-display); font-size: 2rem; color: var(--ink);
+}
+.portrait__intro { display: grid; gap: var(--space-1); font-size: 15px; line-height: 1.8; }
+.portrait__quote {
+  font-family: var(--font-display); font-size: var(--fs-lead); color: var(--gold);
+  margin: 0;
+}
+.portrait__quote:empty { display: none; }
+
+@media (min-width: 768px) {
+  /* the photo takes the left 42% and the words the rest, as in the original */
+  .portrait__body { grid-template-columns: 42% 1fr; gap: var(--space-5); }
+}
+
+/* the message that answers a form ------------------------------------------ */
+.toast {
+  position: fixed;
+  left: 50%; transform: translateX(-50%);
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  z-index: 60;
+  padding: 11px 18px;
+  border-radius: var(--radius-pill);
+  background: var(--toast-bg);
+  color: var(--toast-ink);
+  font-size: 13px;
+  box-shadow: 0 6px 24px var(--toast-shadow);
+  animation: toast-in var(--fast) var(--ease);
+}
+@keyframes toast-in {
+  from { opacity: 0; transform: translate(-50%, 8px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* the confirm button ------------------------------------------------------- */
+/* One look for every button that sends something: the grey "Xác nhận tham dự" pill
+   from under the calendar. Used there, in the guest book and on the confirmation. */
+.btn-send {
+  display: grid; place-items: center;
+  border: 1px solid var(--cta-edge);
+  border-radius: 20px;
+  background: var(--cta-bg);
+  color: var(--card-button-ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--fast) var(--ease), transform 0.2s ease;
+}
+.btn-send:hover { background: var(--card-button-hover); transform: translateY(-2px); }

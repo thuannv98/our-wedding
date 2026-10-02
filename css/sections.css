@@ -1,0 +1,577 @@
+/* What is particular to one section. Anything reused lives in components.css. */
+
+/* cover -------------------------------------------------------------------- */
+/* Measured off the page this replaces: the photo at its own height, a dark wash over it
+   at half strength, and white type with a drop shadow on top.
+
+   The narrow sizes below are the old page's own, multiplied by the 0.857 it rendered at:
+   it drew on a 420px canvas that the browser scaled down to a 360px screen, so taking its
+   numbers as real pixels made every one of them a seventh too big. That is what pushed
+   "Save The Date" onto two lines and broke the names apart. */
+.cover {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: var(--section-pad) var(--gutter);
+  min-height: 466px;          /* 543.4 on the old canvas */
+}
+/* a real picture rather than a background, so there is nothing between the file and
+   the screen: no custom property, no var() to resolve, and the browser picks the crop */
+.cover__photo, .cover__scrim { position: absolute; inset: 0; z-index: -1; }
+.cover__photo, .cover__photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: 50% 0%;
+}
+.cover__scrim { background: var(--cover-scrim); opacity: var(--cover-scrim-alpha); }
+
+.cover__inner { display: grid; justify-items: center; }
+
+.cover__date, .cover__title, .cover__names {
+  text-shadow: 1px 2px 3px var(--cover-shadow);
+}
+.cover__date {
+  font-family: var(--font-body);
+  font-size: 19px;            /* 22 */
+  line-height: 1.6;
+  letter-spacing: 0.86px;     /* 1 */
+  color: var(--cover-ink);
+}
+.cover__title {
+  font-family: var(--font-display);
+  font-size: 60px;            /* 70 */
+  line-height: 1.6;
+  letter-spacing: 0.86px;     /* 1 */
+  color: var(--cover-ink);
+}
+.cover__names {
+  font-family: var(--font-display);
+  font-size: 29px;            /* 34 */
+  line-height: 1.6;
+  color: var(--cover-names);
+}
+.cover__heart { margin-inline: 0.2em; }
+
+/* four rings, the numbers inside them and the labels under */
+.countdown {
+  list-style: none; margin: 16px 0 0; padding: 0;
+  display: flex; gap: 13px; justify-content: center;   /* 304.3 wide on the old canvas */
+}
+.countdown li {
+  display: grid; place-items: center; align-content: center;
+  width: 55px; height: 55px;  /* 64 */
+  border: 1px solid var(--coral);
+  border-radius: var(--radius-pill);
+  background: var(--nen-trang);
+}
+.countdown b { font-size: 17px;   /* 20 */ font-weight: 700; color: var(--coral); line-height: 1.1; }
+.countdown span { font-size: 11px;   /* 13 */ line-height: 1.6; color: var(--sand); }
+
+.cover__scroll {
+  position: absolute;
+  bottom: calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
+  width: 1.2em; height: 1.2em;
+  border: solid var(--cover-ink); border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  opacity: 0.8;
+  animation: nudge 2s var(--ease) infinite;
+}
+@keyframes nudge { 50% { transform: rotate(45deg) translate(0.3em, 0.3em); } }
+
+@media (min-width: 768px) {
+  .cover { min-height: 864px; }
+  .cover__date { font-size: 30px; }
+  .cover__title { font-size: 110px; }
+  .cover__names { font-size: 80px; }
+  .countdown { gap: 36px; margin-top: var(--space-3); }
+  .countdown li { width: 116px; height: 116px; }
+  .countdown b { font-size: 40px; }
+  .countdown span { font-size: 16px; }
+}
+
+/* the couple --------------------------------------------------------------- */
+/* Everything here is placed as a percentage of the section's own box, taken from the
+   960x1164 arrangement the old page used, so the composition holds at any width.
+   The backdrop is an arch: the top corners rounded right off, veiled in white. */
+.couple { padding: 0 var(--gutter); }
+/* The old page rendered this whole section at 74.1% so it could be taken in without
+   scrolling. One number does that here, and everything inside is sized through it. */
+.couple__stage {
+  position: relative;
+  aspect-ratio: 960 / 1164;
+  --scale: 1;
+}
+@media (min-width: 768px) {
+  .couple__stage { --scale: 0.741; max-width: calc(var(--container) * var(--scale)); }
+}
+
+.arch {
+  position: absolute; left: 0; top: 0; width: 100%; height: 95.53%;
+  overflow: hidden;
+  border-radius: 500px 500px 18px 18px;
+  box-shadow: 0 18px 44px var(--arch-shadow);
+}
+.arch__photo, .arch__veil { position: absolute; inset: 0; }
+.arch__photo { background: var(--photo, none) center 18% / cover no-repeat, var(--nen-xanh); }
+.arch__veil { background: var(--nen-trang); opacity: 0.62; }
+
+.couple__stage > :not(.arch) { position: absolute; margin: 0; }
+
+/* a square, as it was drawn: left to its own aspect it grew tall and ran into the title */
+.couple__mark { left: 45.21%; top: 4.98%; width: 9.58%; height: 7.90%; object-fit: contain; }
+
+.couple__title {
+  left: 0; top: 12.54%; width: 100%;
+  font-family: var(--font-display);
+  font-size: calc(var(--fs-title) * var(--scale));
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--ink-grey);
+  text-align: center;
+}
+
+.couple__photo {
+  top: 21.48%; width: 41.35%; height: 41.84%;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 10px 26px var(--photo-lift);
+}
+.couple__photo--groom { left: 6.875%; }
+.couple__photo--bride { left: 51.5625%; }
+
+/* the name, then a rule with a heart at its left end underneath it. Both are placed
+   inside the 397x72 block the old page used: the name at 16px down, the rule at 50px,
+   which is why they sit close enough to read as one mark. */
+.nameplate { top: 64.26%; width: 41.35%; height: 6.19%; }
+.nameplate--groom { left: 6.875%; }
+.nameplate--bride { left: 51.5625%; }
+.nameplate__name, .nameplate__rule { position: absolute; left: 0; width: 100%; }
+.nameplate__name {
+  /* close down onto the rule: the name's own leading used to hold it well clear of it */
+  top: 33%;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: calc(2rem * var(--scale));
+  line-height: 1.05;
+  color: var(--ink);
+  text-align: center;
+}
+.nameplate__rule {
+  /* the rule runs along the foot of the heart rather than through its middle */
+  top: 69.44%; height: 27.78%;
+  display: flex; align-items: flex-end;
+  color: var(--line-ink);
+}
+.nameplate__heart {
+  /* 17 x 18 was the old box; the drawing inside it was 17 x 14.6 */
+  width: calc(17px * var(--scale)); height: calc(14.6px * var(--scale));
+  flex: 0 0 auto;
+  margin-right: 2.52%;          /* the 10px gap the old page left, as a share of 397 */
+}
+.nameplate__rule::after {
+  content: ""; flex: 1 1 auto; height: 1px; background: currentColor;
+  margin-bottom: calc(2px * var(--scale));   /* just inside the heart's point, not under it */
+}
+
+/* the parent lines keep a two-line slot and sit centred in it, so leaving one name
+   out of the data puts the other in the middle instead of hanging at the top */
+.couple__parents, .couple__home {
+  width: 41.35%; font-size: calc(var(--fs-body) * var(--scale));
+  line-height: 1.95; text-align: center; color: var(--ink);
+}
+.couple__parents {
+  height: 6.44%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.couple__parents { top: 71.82%; }
+.couple__home { top: 79.21%; }
+.couple__parents--groom, .couple__home--groom { left: 6.875%; }
+.couple__parents--bride, .couple__home--bride { left: 51.5625%; }
+
+/* the two buttons, in the sand colour the old page gave them */
+.couple__portrait {
+  top: 86.20%; width: 31.46%; height: 6.36%;
+  border: 1px solid var(--button-edge);
+  background: var(--sand);
+  color: var(--button-ink);
+  font-size: calc(16px * var(--scale));
+  cursor: pointer;
+  transition: filter var(--fast) var(--ease), transform var(--fast) var(--ease);
+}
+.couple__portrait:hover { filter: brightness(1.04); transform: translateY(-2px); }
+.couple__portrait span { pointer-events: none; }
+.couple__chevron { position: absolute; right: 14%; top: 50%; width: calc(17px * var(--scale)); height: calc(30px * var(--scale)); transform: translateY(-50%); }
+
+/* The two buttons are never both the same: one is sand, the other cream, and a click
+   swaps them. At rest his is sand and hers is cream, which is how the old page loaded.
+   The cream used to be laid over a photograph of another couple that shipped with the
+   template; the colour alone carries it, and nobody else's wedding is on the page. */
+.couple__portrait--bride { background: var(--cover-names); }
+.couple__portrait.is-open { background: var(--cover-names); }
+.couple__stage:has(.is-open) .couple__portrait:not(.is-open) {
+  background: var(--sand);
+}
+.couple__portrait--groom { left: 13.54%; }
+.couple__portrait--bride { left: 56.25%; }
+
+@media (max-width: 767px) {
+  /* A fixed canvas cannot hold text that wraps: on a phone the names ran into the
+     parents' lines. Here the section is an ordinary two-column grid, one column per
+     person, and each row lines their pieces up.
+
+     Each piece is unpinned by name rather than through one blanket rule: a blanket
+     `.couple__stage > :not(.arch)` outranks a plain class, so `width: auto` in it beat
+     every size set below and the ornament grew to the size of its own drawing. */
+  /* The old page drew this on a 420px canvas and let the browser scale it down to the
+     screen, so on a 360px phone every size rendered at 0.857 and the lines fitted. v2
+     uses real pixels, so the sizes below are the old ones already multiplied out, and
+     the gutters are narrow to leave the columns their width. */
+  .couple { padding: var(--section-pad) 8px; }
+  .couple__stage {
+    aspect-ratio: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* The old page put the two photographs at 14.9 and 189.2 on a 360px screen, 156.2
+       wide each. With the section's own 8px the columns ran wider than that and the
+       pictures reached the arch's edge, so the stage keeps 7px of its own back. */
+    padding-inline: 7px;
+    gap: 4px 18px;
+    align-items: start;
+  }
+
+  .arch {
+    position: absolute; z-index: 0;
+    /* the arch spanned 5.2 to 354.1, just outside the stage's own box */
+    left: -3px; right: -3px; top: 0; bottom: 0;
+    border-radius: 220px 220px 12px 12px;
+  }
+
+  /* written as children of the stage so they match the blanket desktop rule's weight
+     and win by coming later; as plain classes they lost and stayed absolutely placed */
+  .couple__stage > .couple__mark,
+  .couple__stage > .couple__title,
+  .couple__stage > .couple__photo,
+  .couple__stage > .nameplate,
+  .couple__stage > .couple__parents,
+  .couple__stage > .couple__home,
+  .couple__stage > .couple__portrait {
+    position: relative; z-index: 1;
+    left: auto; top: auto;
+  }
+
+  .couple__mark { grid-column: 1 / -1; justify-self: center; width: 48px; height: 48px; }
+  .couple__title { grid-column: 1 / -1; width: auto; margin-bottom: var(--space-3); }
+
+  .couple__photo { width: 100%; height: auto; aspect-ratio: 182.249 / 215.583; }   /* its own narrow crop */
+
+  .nameplate { width: auto; height: auto; display: grid; gap: 0; margin-top: var(--space-2); }
+  .nameplate__name, .nameplate__rule { position: static; }
+  .nameplate__name { font-size: 17px; }
+
+  .couple__parents, .couple__home { width: auto; height: auto; font-size: 11px; line-height: 1.7; }
+  .couple__parents { display: block; }
+  .couple__home { font-size: 10px; margin-bottom: var(--space-3); }
+
+  .couple__portrait { width: auto; height: 38px; font-size: 10px; }
+  .couple__chevron { right: 10%; }
+}
+
+/* the invitation and its three ceremonies ---------------------------------- */
+/* Placed as percentages of the arrangement the old page used, with the vertical
+   spacing re-cut: the first ceremony sits 28px higher, and the gap between the two rows
+   is now 30px, the same as the gap between the two cards in the second row. The canvas
+   shortens from 1080 to 1031 so the foot keeps the 40px it had. */
+.invite { padding: 0 var(--gutter); }
+.invite__stage { position: relative; aspect-ratio: 960 / 971.2; }
+.invite__stage > * { position: absolute; margin: 0; }
+
+.invite__mark { left: 47.04%; top: 1.853%; width: 5.83%; height: 5.766%; color: var(--gold); }
+.invite__title {
+  left: 28.07%; top: 7.620%; width: 43.85%;
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  line-height: 1.15;
+  color: var(--gold);
+  text-align: center;
+}
+.invite__rule {
+  left: 44.84%; top: 12.871%; width: 10.31%; height: 1px;
+  background: var(--rule);
+}
+
+.invite__names, .invite__kinhmoi, .invite__line {
+  left: 28.125%; width: 43.80%; text-align: center;
+}
+.invite__names {
+  top: 15.517%;
+  font-family: var(--font-display);
+  font-size: 37px; line-height: 1.6;
+  color: var(--gold);
+  white-space: nowrap;      /* the heart belongs between the names, not under them */
+}
+.invite__kinhmoi {
+  top: 23.342%; font-size: var(--fs-body); line-height: 1.6; color: var(--ink);
+}
+.invite__kinhmoi span {
+  color: var(--gold);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-left: 0.6em;        /* set apart from the line it follows */
+}
+.invite__heart { margin-inline: 0.2em; }
+.invite__line {
+  top: 27.873%; font-size: var(--fs-body); line-height: 1.7; color: var(--ink);
+}
+
+/* The three cards: one centred above, two side by side below.
+   The list has to span the whole stage. It is absolutely positioned like its siblings,
+   so it becomes the containing block for the cards inside it, and left alone it shrinks
+   to its content and drags them into a narrow column at the left edge. */
+.ceremonies {
+  list-style: none; padding: 0;
+  left: 0; top: 0; width: 100%; height: 100%;
+}
+.ceremony {
+  position: absolute;
+  width: 48.44%;
+  aspect-ratio: 465 / 255.595;
+}
+.ceremony:nth-child(1) { left: 25.78%; top: 40.157%; }
+.ceremony:nth-child(2) { left: 0; top: 69.564%; }
+.ceremony:nth-child(3) { left: 51.5625%; top: 69.564%; }
+.ceremony > * { position: absolute; margin: 0; }
+
+/* the panel is the only thing carrying the tint, so the text over it stays solid.
+   It names its layer too, so nothing depends on it happening to come first. */
+.ceremony > * { z-index: 1; }
+.ceremony__actions { display: contents; }
+.ceremony__panel {
+  z-index: 0;
+  left: 0; top: 11.97%; width: 100%; height: 88.03%;
+  background: var(--card-dark);
+  opacity: 0.7;
+}
+/* the photo sits at the top right and rises above the panel's edge */
+.ceremony__photo {
+  left: 56.77%; top: 0; width: 36.68%; height: 44.44%;
+  object-fit: cover;
+}
+.ceremony__title {
+  left: 10.54%; top: 17.84%; width: 42.80%;
+  font-family: var(--font-body);
+  font-size: var(--fs-body); line-height: 1.6;
+  color: var(--sand);
+}
+.ceremony__icon { color: var(--card-ink); }
+.ceremony__icon--time { left: 3.23%; top: 34.66%; width: 5.81%; height: 10.56%; }
+.ceremony__icon--place { left: 3.66%; top: 53.44%; width: 4.73%; height: 8.61%; }
+.ceremony__when, .ceremony__where {
+  left: 10.54%; display: grid;
+  font-size: 13px; line-height: 1.6; color: var(--card-ink);
+}
+.ceremony__when { top: 34.59%; width: 64.52%; }
+/* the hour and the date read as one block: neither line is weighted over the other */
+.ceremony__time, .ceremony__date, .ceremony__venue, .ceremony__address {
+  font-size: inherit; font-weight: inherit; color: inherit;
+}
+.ceremony__where { top: 53.44%; width: 63.66%; }
+
+.ceremony__btn {
+  /* The buttons sit inside .ceremony__actions, so `.ceremony > *` never reached them:
+     that rule matches the DOM, and `display: contents` on the wrapper only changes the
+     box tree. Left static they ignored every percentage below and piled up at the top
+     of the card, over the title. Each says where it stands itself. */
+  position: absolute; z-index: 1;
+  top: 74.96%; width: 34.41%; height: 15.65%;
+  display: grid; place-items: center;
+  border: 1px solid var(--card-edge);
+  border-radius: 5px;
+  background: var(--card-button);
+  color: var(--card-button-ink);
+  font-size: 14px; line-height: 1.6;
+  text-decoration: none;
+  transition: background var(--fast) var(--ease);
+}
+.ceremony__btn:hover { background: var(--card-button-hover); }
+.ceremony__rsvp { left: 9.25%; }
+.ceremony__map { left: 56.77%; }
+
+@media (max-width: 767px) {
+  /* the cards stack and the whole block grows taller to hold them */
+  .invite__stage { aspect-ratio: auto; display: grid; gap: var(--space-3); padding-block: var(--space-4); }
+  .invite__stage > * { position: static; }
+  .invite__mark { width: 56px; height: 56px; justify-self: center; }
+  .invite__title, .invite__names, .invite__kinhmoi, .invite__line { width: 100%; }
+  .invite__rule { width: 99px; justify-self: center; }
+  .invite__names { font-size: 28px; }
+  .ceremonies { position: static; width: auto; height: auto; display: grid; gap: var(--space-3); }
+
+  /* the desktop places are set per card, which outranks the plain .ceremony rule:
+     without naming them again here they keep their absolute spots and pile up */
+  .ceremony:nth-child(1), .ceremony:nth-child(2), .ceremony:nth-child(3) {
+    left: auto; top: auto;
+  }
+
+  /* Inside a card the lines were placed by percentage too, so a venue that wrapped ran
+     straight over the hour above it. The card becomes an ordinary grid: an icon column
+     and a text column, with the picture still lifted out of the top corner. */
+  .ceremony {
+    position: relative; width: 100%;
+    aspect-ratio: auto;
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 7px 8px;
+    padding: 26px 12px 12px;
+    align-items: start;
+  }
+  .ceremony > * { position: static; width: auto; height: auto; }
+
+  .ceremony__panel { position: absolute; left: 0; right: 0; top: 22px; bottom: 0; z-index: 0; }
+  .ceremony__photo {
+    position: absolute; right: 8px; top: 0; z-index: 1;
+    width: 34%; aspect-ratio: 131.167 / 95.3418;
+  }
+
+  /* the sizes are the old page's own, already multiplied by the 0.857 it rendered at
+     on a 360px screen; left as declared they come out 40% too large */
+  .ceremony__title { grid-column: 1 / -1; padding-right: 36%; font-size: 14px; }
+  .ceremony__when, .ceremony__where { font-size: 12px; line-height: 1.6; }
+  .ceremony__icon--time { width: 19px; height: 19px; margin-top: 1px; }
+  .ceremony__icon--place { width: 16px; height: 16px; margin-top: 2px; }
+
+  .ceremony__actions {
+    display: flex; gap: 10px;
+    grid-column: 1 / -1;
+    margin-top: 4px;
+  }
+  .ceremony__btn { position: static; flex: 1 1 0; height: 26px; font-size: 11px; }
+}
+
+/* our story ---------------------------------------------------------------- */
+/* Four photos in a white frame, overlapping the way the old collage did. Each one is
+   placed as a percentage of the cluster's own box, so the arrangement survives any
+   width instead of being pinned to a 960px canvas.
+
+   The proportions are the old ones: the cluster is 45.8% of the container wide and
+   fills 89% of the section's height, which leaves it only 33px of air above and below
+   rather than the full section padding every other section gets. */
+.story { padding-block: 33px; }
+.story__grid { display: grid; gap: var(--space-4); align-items: start; }
+
+.story__photos {
+  list-style: none; margin: 0; padding: 0;
+  position: relative;
+  aspect-ratio: 0.8239;
+  width: 100%;
+}
+.story__photo { position: absolute; margin: 0; }
+.story__photo img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  border: 7px solid var(--frame);
+  border-radius: 16px;
+  box-shadow: var(--photo-drop);
+  transition: transform var(--fast) var(--ease);
+}
+.story__photo:hover img { transform: scale(1.02); }
+
+.story__photo:nth-child(1) { left: 0.00%; top: 0.00%; width: 48.36%; height: 59.76%; }
+.story__photo:nth-child(2) { left: 45.27%; top: 4.51%; width: 46.86%; height: 57.92%; }
+.story__photo:nth-child(3) { left: 5.09%; top: 55.55%; width: 44.95%; height: 44.45%; }
+.story__photo:nth-child(4) { left: 46.50%; top: 60.79%; width: 53.50%; height: 29.37%; }
+
+/* the one that sits on top of its neighbour, as in the original */
+.story__photo:nth-child(2), .story__photo:nth-child(4) { z-index: 1; }
+
+.story__words { display: grid; gap: var(--space-3); text-align: left; }
+.story__words h2 { text-align: left; }
+
+@media (min-width: 768px) {
+  /* 45.8% for the cluster, the rest for the words, which start near the top of the
+     section rather than floating in the middle of it */
+  .story__grid { grid-template-columns: 45.8% 1fr; gap: 3.1%; }
+  .story__words { padding-top: 8.4%; }
+}
+
+@media (max-width: 767px) {
+  /* on a phone the cluster is nearly the full width and the words sit under it */
+  .story { padding-block: 34px; }
+  .story__photos { aspect-ratio: 0.766; width: 92.4%; margin-inline: auto; }
+  .story__words { padding-top: var(--space-4); }
+}
+
+/* save the date ------------------------------------------------------------ */
+/* The calendar block starts at the top of its section and leaves a small gap under
+   the button, which is all the padding the old page gave it. */
+#save-the-date { padding: 40px var(--gutter) 30px; }
+/* the calendar block ran the full width of the old canvas, with no side margin */
+@media (max-width: 767px) { #save-the-date { padding: 28px 0 20px; } }
+
+/* the doors ---------------------------------------------------------------- */
+/* Two halves of the red double-happiness panel covering the page, sliding apart over
+   four seconds the way the old page did. The picture is a real <img> stretched across
+   both halves, each showing its own side of it: a background fed by a custom property
+   had already gone wrong twice here, and there is nothing to resolve this way. */
+/* The panel takes the tap itself: that one gesture both parts the doors and is the
+   user action every browser waits for before it will let the music start. */
+.doors { position: fixed; inset: 0; z-index: 50; }
+.doors.is-open { pointer-events: none; }
+.doors__half {
+  position: absolute; top: 0; bottom: 0; width: 50%;
+  overflow: hidden;
+  background: var(--hy-red);          /* red from the first paint, before any script */
+  transition: transform 4s ease-in-out;
+}
+.doors__half--left { left: 0; }
+.doors__half--right { right: 0; }
+
+/* The mark spans the pair: each half holds a viewport-wide copy pinned to its own side,
+   and the two line up into one mark across the seam. Contained rather than stretched,
+   so the circle stays a circle; the red behind fills whatever it does not cover. */
+.doors__art {
+  position: absolute; top: 0; height: 100%; width: 100vw;
+}
+.doors__art img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.doors__half--left .doors__art { left: 0; }
+.doors__half--right .doors__art { right: 0; }
+
+/* The invitation says nothing until the cover behind it is actually there, so the
+   words do not invite a tap onto a blank page. */
+.doors__open {
+  position: absolute; left: 50%; bottom: 12%; translate: -50% 0;
+  z-index: 1;
+  border: 1px solid var(--door-ink-soft);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--door-ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 11px 26px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.6s var(--ease);
+}
+.doors.is-ready .doors__open { opacity: 1; animation: door-breathe 2.4s var(--ease) infinite; }
+.doors.is-open .doors__open { opacity: 0; animation: none; }
+.doors__open:hover { background: var(--door-ink-wash); }
+
+@keyframes door-breathe {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@media (min-width: 768px) { .doors__open { font-size: 17px; padding: 13px 34px; } }
+
+.doors.is-open .doors__half--left { transform: translateX(-100%); }
+.doors.is-open .doors__half--right { transform: translateX(100%); }
+.doors.is-gone { display: none; }
+
+@media (prefers-reduced-motion: reduce) { .doors { display: none; } }

@@ -1,0 +1,133 @@
+/* Save The Date, ported from the page this replaces rather than redrawn: the panel, the
+   cell sizes, the day and lunar numbers and the marks keep their own measurements. */
+
+.std { text-align: center; color: var(--ink); }
+
+.std__kicker {
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  line-height: 1.1;
+  color: var(--gold);
+}
+.std__sub {
+  margin-top: 4px;
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.std__row {
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 12px;
+}
+.std__sprig { flex: 0 0 auto; }
+.std__sprig--flip { transform: scaleX(-1); }
+
+.std__cal {
+  flex: 0 0 auto;
+  background: var(--cal-panel);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px var(--cal-shadow);
+}
+
+.std__month {
+  font-family: var(--font-head);
+  letter-spacing: 0.1em;
+  color: var(--gold);
+}
+.std__month span { opacity: 0.55; }
+
+.std__grid {
+  display: grid;
+  grid-template-columns: repeat(7, var(--std-cell));
+  gap: 3px;
+  justify-content: center;
+}
+.std__wd {
+  font-family: var(--font-body);
+  letter-spacing: 0.06em;
+  color: var(--gold-mid);
+  font-weight: 700;
+  height: 24px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.std__day {
+  font-family: var(--font-body);
+  height: var(--std-row-h);
+  position: relative;
+  border-radius: 12px;
+}
+.std__day--empty { visibility: hidden; }
+.std__solar { position: absolute; top: 5px; left: 7px; line-height: 1; color: var(--ink); }
+.std__lunar { position: absolute; bottom: 5px; right: 7px; line-height: 1; color: var(--gold-mid); opacity: 0.62; }
+
+.std__day--marked {
+  background: var(--mark);
+  box-shadow: inset 0 0 0 1.5px var(--mark-ring);
+}
+.std__day--marked .std__solar { color: var(--gold-deep); font-weight: 700; }
+.std__day--marked .std__lunar { opacity: 0.85; font-weight: 600; }
+
+.std__marks {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  gap: 2px; line-height: 0;
+}
+.std__rings { color: var(--gold-soft); flex: 0 0 auto; }
+.std__ico { flex: 0 0 auto; object-fit: contain; display: block; }
+
+.std__legend {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  font-family: var(--font-body);
+  color: var(--gold-mid);
+}
+.std__legend span { display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; }
+
+/* the button the old page set under the calendar */
+.std__cta { margin-top: 12px; }
+.std__btn { display: inline-grid; width: 245px; height: 40px; }
+
+@media (min-width: 768px) {
+  .std { --std-cell: 64px; --std-row-h: 58px; }
+  .std__kicker { font-size: 3.5rem; }
+  .std__sub { font-size: 1rem; letter-spacing: 0.16em; }
+  .std__legend { font-size: 1rem; }
+  .std__sprig { height: 300px; width: 108px; }
+  .std__cal { padding: 20px 22px 14px; }
+  .std__month { font-size: 26px; margin-bottom: 12px; }
+  .std__wd { font-size: 12px; }
+  .std__solar { font-size: 17px; }
+  .std__lunar { font-size: 10px; }
+  .std__rings { width: 24px; height: 18px; }
+  .std__ico { width: 26px; height: 26px; }
+  .std__legend { gap: 16px; margin-top: 14px; }
+  .std__legend .std__rings { width: 20px; height: 15px; }
+  .std__legend .std__ico { width: 24px; height: 24px; }
+}
+
+@media (max-width: 767px) {
+  /* The old page drew this on a 420px canvas and let it scale to the screen, so on a
+     360px phone everything rendered at 0.857. These are those sizes multiplied out. */
+  .std { --std-cell: 41px; --std-row-h: 43px; }
+  .std__kicker { font-size: 34px; }
+  .std__sub { font-size: 11.7px; letter-spacing: 0.12em; }
+  .std__legend { font-size: 10.5px; gap: 5px; margin-top: 7px; row-gap: 3px; }
+  .std__sprig { height: 171px; width: 20px; }
+  .std__cal { padding: 10px 7px 9px; }
+  .std__month { font-size: 17px; margin-bottom: 7px; }
+  .std__wd { font-size: 9.4px; height: 17px; }
+  .std__solar { font-size: 12px; top: 4px; left: 5px; }
+  .std__lunar { font-size: 7.7px; bottom: 4px; right: 5px; }
+  .std__rings { width: 15px; height: 11px; }
+  .std__ico { width: 17px; height: 17px; }
+  .std__legend .std__rings { width: 12px; height: 9px; }
+  .std__legend .std__ico { width: 14px; height: 14px; }
+
+  /* seven fixed cells plus two sprigs overran the canvas, so the columns share out
+     whatever width is left instead */
+  .std__cal { flex: 1 1 auto; min-width: 0; box-sizing: border-box; }
+  .std__grid { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+}
+
+

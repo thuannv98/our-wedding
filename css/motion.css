@@ -1,0 +1,216 @@
+/* Motion, lifted from the page this replaces so the timing and distances match.
+ *
+ * An element carries data-anim="fadeInUp"; a watcher adds .is-in when it scrolls into
+ * view and the animation runs once. Until then the element is simply invisible, so
+ * nothing flashes into place before its turn.
+ *
+ * Anyone who has asked their system for less motion gets none of it: every element is
+ * visible from the start.
+ */
+
+[data-anim] { opacity: 0; }
+
+/* Once the entrance has played, the element drops back to an ordinary visible state.
+   Leaving the animation in place with fill-mode: both would keep its final transform
+   applied for good, and an animation outranks every normal rule, so nothing could
+   grow it under the pointer afterwards. */
+[data-anim].is-shown { opacity: 1; animation: none; }
+
+[data-anim].is-in {
+  animation-name: var(--anim-name);
+  animation-duration: var(--anim-duration, 1s);
+  animation-delay: var(--anim-delay, 0s);
+  animation-fill-mode: both;
+  animation-timing-function: var(--ease);
+}
+
+[data-anim="fadeIn"] { --anim-name: fadeIn; }
+[data-anim="fadeInUp"] { --anim-name: fadeInUp; }
+[data-anim="fadeInDown"] { --anim-name: fadeInDown; }
+[data-anim="fadeInLeft"] { --anim-name: fadeInLeft; }
+[data-anim="fadeInRight"] { --anim-name: fadeInRight; }
+[data-anim="bounceIn"] { --anim-name: bounceIn; }
+[data-anim="tada"] { --anim-name: tada; }
+[data-anim="pulse"] { --anim-name: pulse; }
+
+/* Hearts and blossom drifting down the whole page, as the old one had. Decoration
+   only, so it never takes a click and it goes quiet for anyone who asked for less
+   motion. It sits under the dialogs: the original put it above them, which left
+   petals falling across an open photo. */
+.petals { position: fixed; inset: 0; pointer-events: none; z-index: 9; overflow: hidden; }
+.petal {
+  position: fixed;
+  top: -10%;
+  font-size: 1em;
+  user-select: none;
+  animation-name: petal-fall, petal-drift;
+  animation-duration: 10s, 3s;
+  animation-timing-function: linear, ease-in-out;
+  animation-iteration-count: infinite, infinite;
+}
+.petal:nth-child(1) { left: 1%; animation-delay: 0s, 0s; font-size: 20px; }
+.petal:nth-child(2) { left: 10%; animation-delay: 1s, 1s; }
+.petal:nth-child(3) { left: 20%; animation-delay: 6s, 0.5s; font-size: 18px; }
+.petal:nth-child(4) { left: 30%; animation-delay: 4s, 2s; }
+.petal:nth-child(5) { left: 40%; animation-delay: 2s, 2s; font-size: 20px; }
+.petal:nth-child(6) { left: 50%; animation-delay: 8s, 3s; font-size: 22px; }
+.petal:nth-child(7) { left: 60%; animation-delay: 6s, 2s; font-size: 14px; }
+.petal:nth-child(8) { left: 70%; animation-delay: 2.5s, 1s; font-size: 16px; }
+.petal:nth-child(9) { left: 80%; animation-delay: 1s, 0s; font-size: 18px; }
+.petal:nth-child(10) { left: 90%; animation-delay: 3s, 1.5s; font-size: 15px; }
+
+@keyframes petal-fall { 0% { top: -10%; } 100% { top: 100%; } }
+@keyframes petal-drift { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(80px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .petals { display: none; }
+}
+
+/* the cover waits a beat before it comes in, the way the old page did */
+.cover [data-anim] { --anim-delay: 1s; }
+
+/* The old page put `transition: all 150ms linear` on every element and grew it a little
+   when pointed at. The scale was set by hand per element there, 1.03 on fifty of them,
+   1.05 on twenty-seven, 1.02 on fourteen; here the commonest value is the rule and the
+   pictures keep the measured ones below.
+
+   Behind `hover: hover` so a touch leaves nothing stuck mid-scale. */
+@media (hover: hover) {
+  .section :is(h2, h3, p, blockquote, figcaption, legend, label),
+  .cover__date, .cover__title, .cover__names,
+  .couple__title, .nameplate__name, .couple__parents, .couple__home,
+  .book__title, .book__sub, .notes__title, .note__text, .note__by,
+  .lead, .foreword__text {
+    transition: transform 150ms linear;
+  }
+  .section :is(h2, h3, p, blockquote, figcaption):hover,
+  .cover__date:hover, .cover__title:hover, .cover__names:hover,
+  .couple__title:hover, .nameplate__name:hover,
+  .couple__parents:hover, .couple__home:hover,
+  .book__title:hover, .notes__title:hover, .note__text:hover, .note__by:hover,
+  .lead:hover, .foreword__text:hover {
+    transform: scale(1.03);
+  }
+}
+
+/* The small lift the old page gave anything you point at. Only the album opens a
+   slideshow, so only its tiles take a zoom cursor; the rest lift but stay unclickable. */
+.album__tile img, .couple__photo, .ceremony__photo,
+.portrait__photo, .story__photo img, .rsvp__photo {
+  transition: transform var(--fast) var(--ease), box-shadow var(--fast) var(--ease);
+}
+.album__tile button:hover img { transform: scale(1.04); }
+.couple__photo:hover, .ceremony__photo:hover,
+.portrait__photo:hover, .story__photo img:hover { transform: scale(1.02); }
+.btn:hover, .book__send:hover { transform: translateY(-2px); }
+.card:hover { box-shadow: var(--shadow-hover); }
+.card { transition: box-shadow var(--fast) var(--ease); }
+
+@keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+
+@keyframes fadeInUp {
+ 0% {
+ opacity: 0;
+ transform: translateY(20px);
+ }
+ 100% {
+ opacity: 1;
+ transform: translateY(0);
+ }
+ }
+@keyframes fadeInDown {
+ 0% {
+ opacity: 0;
+ transform: translateY(-20px);
+ }
+ 100% {
+ opacity: 1;
+ transform: translateY(0);
+ }
+ }
+@keyframes fadeInLeft {
+ 0% {
+ opacity: 0;
+ transform: translateX(-20px);
+ }
+ 100% {
+ opacity: 1;
+ transform: translateX(0);
+ }
+ }
+@keyframes fadeInRight {
+ 0% {
+ opacity: 0;
+ transform: translateX(40px);
+ }
+ 100% {
+ opacity: 1;
+ transform: translateX(0);
+ }
+ }
+@keyframes bounceIn {
+ 0% {
+ opacity: 0;
+ transform: scale(0.3);
+ }
+ 50% {
+ opacity: 1;
+ transform: scale(1.05);
+ }
+ 70% {
+ transform: scale(0.9);
+ }
+ 100% {
+ opacity: 1;
+ transform: scale(1);
+ }
+ }
+@keyframes pulse {
+ 0% {
+ transform: scale(1);
+ }
+ 50% {
+ transform: scale(1.1);
+ }
+ 100% {
+ transform: scale(1);
+ }
+ }
+@keyframes tada {
+ 0% {
+ transform: scale(1);
+ }
+ 10%,
+ 20% {
+ transform: scale(0.9) rotate(-3deg);
+ }
+ 30%,
+ 50%,
+ 70%,
+ 90% {
+ transform: scale(1.1) rotate(3deg);
+ }
+ 40%,
+ 60%,
+ 80% {
+ transform: scale(1.1) rotate(-3deg);
+ }
+ 100% {
+ transform: scale(1) rotate(0);
+ }
+ }
+@keyframes bounce {
+ 0%,
+ 100%,
+ 20%,
+ 50%,
+ 80% {
+ transform: translateY(0);
+ }
+ 40% {
+ transform: translateY(-30px);
+ }
+ 60% {
+ transform: translateY(-15px);
+ }
+ }

@@ -1,0 +1,85 @@
+/* The controls that float over the page: music at the bottom left, and on the right a
+   way back to the top and a list of the sections. Sizes and the grey are the old page's. */
+
+/* one round button with a note on it; it pulses while the music is playing */
+.music {
+  position: fixed;
+  left: var(--gutter);
+  bottom: calc(var(--gutter) + env(safe-area-inset-bottom, 0px));
+  z-index: 40;
+  width: 50px; height: 50px;
+  display: grid; place-items: center;
+  border: 0; border-radius: 100px;
+  background: var(--dock-grey);
+  color: var(--toast-ink);
+  cursor: pointer;
+  transition: background var(--fast) var(--ease), transform var(--fast) var(--ease);
+}
+.music:hover { background: var(--gold-soft); transform: translateY(-2px); }
+.music__note { width: 22px; height: 22px; fill: currentColor; }
+.music.is-playing { animation: disc 1.3s infinite; }
+.music.is-playing .music__note { animation: note 1.3s ease-in-out infinite; }
+@keyframes disc {
+  0% { box-shadow: 0 0 0 0 var(--dock-pulse); }
+  70% { box-shadow: 0 0 0 14px var(--dock-pulse-out); }
+  100% { box-shadow: 0 0 0 0 var(--dock-pulse-out); }
+}
+@keyframes note {
+  0%, 100% { transform: rotate(-8deg); }
+  50% { transform: rotate(8deg); }
+}
+
+/* the pair on the right ---------------------------------------------------- */
+.dock {
+  position: fixed;
+  right: var(--gutter);
+  bottom: calc(var(--gutter) + env(safe-area-inset-bottom, 0px));
+  z-index: 40;
+  display: grid; gap: 12px;
+}
+.dock__btn {
+  width: 50px; height: 50px;
+  display: grid; place-items: center;
+  border: 0; border-radius: 100px;
+  background: var(--dock-grey);
+  color: var(--toast-ink);
+  cursor: pointer;
+  transition: background var(--fast) var(--ease), transform var(--fast) var(--ease);
+}
+.dock__btn:hover { background: var(--gold-soft); transform: translateY(-2px); }
+.dock__icon { width: 24px; height: 24px; fill: currentColor; }
+.dock__icon--menu { width: 20px; height: 15px; }
+
+/* the list of sections ----------------------------------------------------- */
+.menu {
+  position: fixed;
+  right: var(--gutter);
+  bottom: calc(var(--gutter) + 124px + env(safe-area-inset-bottom, 0px));
+  z-index: 41;
+  max-height: 60vh; overflow-y: auto;
+  padding: var(--space-2);
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: var(--shadow-lg);
+  animation: menu-in var(--fast) var(--ease);
+}
+@keyframes menu-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.menu ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.menu a {
+  display: block;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  font-size: 15px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.menu a:hover { background: var(--nen-xanh); color: var(--gold); }
+
+@media (max-width: 767px) {
+  .music, .dock__btn { width: 44px; height: 44px; }
+  .music__note { width: 20px; height: 20px; }
+}

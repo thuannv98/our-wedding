@@ -1,0 +1,64 @@
+/* The page rhythm: how sections stack, how wide the content runs, and the two
+   alternating grounds. A section never sets its own background colour. */
+
+.section {
+  padding: var(--section-pad) var(--gutter);
+  position: relative;
+}
+
+/* Each section says which of the two grounds it sits on, once, in the markup. It is not
+   a plain alternation: the couple, their two portrait panels and the invitation form one
+   run on the same ground, so a nth-child rule would get it wrong. */
+.section[data-ground="trang"] { background: var(--nen-trang); }
+.section[data-ground="xanh"] { background: var(--nen-xanh); }
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+}
+
+.container--narrow { max-width: var(--measure); }
+
+.stack > * + * { margin-top: var(--flow, var(--space-3)); }
+.stack--tight { --flow: var(--space-2); }
+.stack--loose { --flow: var(--space-4); }
+
+.section__head {
+  text-align: center;
+  margin-bottom: var(--space-4);
+}
+
+.section__head p {
+  font-size: var(--fs-small);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.lead {
+  font-size: var(--fs-lead);
+  max-width: var(--measure);
+  margin-inline: auto;
+  text-align: center;
+}
+
+.rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  color: var(--gold-soft);
+}
+.rule::before, .rule::after {
+  content: "";
+  height: 1px;
+  flex: 1 1 auto;
+  max-width: 120px;
+  background: var(--rule);
+}
+
+/* A heading is gold by default. Two places in the old page differ, and say so. */
+.section__head h2 { color: var(--gold); }
+.section__head--ink h2 { color: var(--ink); }
+.section__head--accent h2 { color: var(--accent-strong); }

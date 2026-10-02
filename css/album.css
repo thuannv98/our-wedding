@@ -1,0 +1,70 @@
+/* Album Ảnh Cưới, a fixed mosaic: two tall tiles flanking four small ones, then three
+   tall ones, exactly as the old page arranged them. Each tile is a percentage of the
+   section's own box, so the mosaic holds at any width. */
+.album { padding: 0 var(--gutter); }
+/* the heading sits closer to the mosaic than the old page had it, and the block
+   shortens by the same amount */
+.album__stage { position: relative; aspect-ratio: 960 / 1353; }
+.album__stage > * { position: absolute; margin: 0; }
+
+.album__title {
+  left: 0; top: 3.600%; width: 100%;
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  color: var(--gold);
+  text-align: center;
+}
+
+.album__mosaic { list-style: none; padding: 0; left: 0; top: 0; width: 100%; height: 100%; }
+.album__tile { position: absolute; margin: 0; }
+.album__tile button {
+  width: 100%; height: 100%;
+  padding: 0; border: 0; background: none; cursor: zoom-in;
+}
+.album__tile img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+/* anything past the ninth waits in the lightbox behind the button */
+.album__tile:nth-child(n + 10) { display: none; }
+
+.album__more {
+  left: 40.210%; top: 87.030%; width: 19.271%; height: 6.177%;
+  display: grid; justify-items: center; gap: 4px;
+  border: 0; background: none; cursor: pointer;
+  color: var(--gold);
+  font-family: var(--font-body);
+  letter-spacing: 0.1em;
+}
+.album__chevron { width: 27.75px; height: 45.67px; }
+
+.album__tile:nth-child(1) { left: 0.000%; top: 14.500%; width: 31.615%; height: 32.826%; }
+.album__tile:nth-child(2) { left: 33.771%; top: 14.500%; width: 15.135%; height: 15.717%; }
+.album__tile:nth-child(3) { left: 51.135%; top: 14.500%; width: 15.135%; height: 15.717%; }
+.album__tile:nth-child(4) { left: 68.385%; top: 14.500%; width: 31.615%; height: 32.826%; }
+.album__tile:nth-child(5) { left: 33.771%; top: 31.609%; width: 15.135%; height: 15.717%; }
+.album__tile:nth-child(6) { left: 51.000%; top: 31.609%; width: 15.135%; height: 15.717%; }
+.album__tile:nth-child(7) { left: 0.000%; top: 49.215%; width: 31.552%; height: 32.754%; }
+.album__tile:nth-child(8) { left: 33.677%; top: 49.215%; width: 32.490%; height: 32.754%; }
+.album__tile:nth-child(9) { left: 68.385%; top: 49.215%; width: 31.552%; height: 32.754%; }
+
+
+@media (max-width: 767px) {
+  .album__stage { aspect-ratio: 420 / 1258.3; }
+  .album__title { top: 4.719%; }
+  /* the old page's own mobile sizes, multiplied by the 0.857 it rendered at */
+  .album__more { left: 34.524%; top: 91.882%; width: 30.952%; height: 4.943%; font-size: 13.7px; }
+  .album__chevron { width: 17px; height: 28px; }
+  .album__title { font-size: 2.5rem; }
+  .album__tile:nth-child(1) { left: 3.889%; top: 11.911%; width: 59.682%; height: 29.882%; }
+  .album__tile:nth-child(2) { left: 67.540%; top: 27.488%; width: 28.571%; height: 14.305%; }
+  .album__tile:nth-child(3) { left: 3.889%; top: 58.720%; width: 28.571%; height: 14.305%; }
+  .album__tile:nth-child(4) { left: 36.429%; top: 43.144%; width: 59.682%; height: 29.882%; }
+  .album__tile:nth-child(5) { left: 67.540%; top: 11.911%; width: 28.571%; height: 14.305%; }
+  .album__tile:nth-child(6) { left: 3.889%; top: 43.144%; width: 28.571%; height: 14.305%; }
+  .album__tile:nth-child(7) { left: 3.889%; top: 74.297%; width: 28.571%; height: 14.305%; }
+  .album__tile:nth-child(8) { left: 35.714%; top: 74.297%; width: 28.571%; height: 14.305%; }
+  .album__tile:nth-child(9) { left: 67.540%; top: 74.297%; width: 28.571%; height: 14.305%; }
+}
