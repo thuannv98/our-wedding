@@ -6,7 +6,7 @@
   /**
    * Fills the page from the data file.
    *
-   *   data-text="groom.name"      text content
+   *   data-text="groom.name"      text content ("a|b" falls back to b)
    *   data-src="groom.photo"      an <img> source
    *   data-photo="cover.photo"    a background image
    *   data-date="weddingDate"     a date, long or short
@@ -15,8 +15,11 @@
    * Text always goes in as text, so nothing in the data file can inject markup.
    */
   function bind(root = document) {
+    // "a|b" takes the first key that has something in it, so the formal name can be
+    // left out without the page showing a blank where a name belongs
     root.querySelectorAll("[data-text]").forEach((el) => {
-      el.textContent = get(el.dataset.text) ?? "";
+      const key = el.dataset.text.split("|").find((k) => has(k.trim()) && get(k.trim()) !== "");
+      el.textContent = (key ? get(key.trim()) : "") ?? "";
     });
 
     root.querySelectorAll("[data-src]").forEach((el) => {
