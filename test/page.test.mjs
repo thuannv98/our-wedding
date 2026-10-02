@@ -151,6 +151,15 @@ check("the cover keeps the short names",
   text(d, ".cover__names").replace(/\s+/g, " ").trim(),
   `${W.groom.name} ♥ ${W.bride.name}`.replace(/\s+/g, " "));
 
+// What a shared link shows comes from the file itself: Zalo and Messenger fetch the HTML
+// and never run the scripts, so a description set from data.js would never reach them.
+{
+  const head = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8").slice(0, 2000);
+  const desc = head.match(/<meta name="description" content="([^"]*)"/);
+  check("the file itself carries a description", desc?.[1], "Happy Wedding - Văn Thuận ♥ Thanh Thùy");
+  check("and it is not left at a placeholder", /Wedding Invitation|Thiệp cưới/.test(desc?.[1] ?? ""), false);
+}
+
 check("both names close the page", text(d, ".thanks__names"), `${W.groom.name} - ${W.bride.name}`);
 
 // motion: nothing may be left invisible, and reduced motion turns it all off
