@@ -165,6 +165,18 @@ check("the cover keeps the short names",
 check("the story is set as three paragraphs",
   d.querySelectorAll(".story__text p").length, 3);
 
+// The strip of wishes read back from the sheet must stand in the section's own flow.
+// Inside .gb__wrap it inherited an absolute position in a box with a locked ratio, so on
+// a wide screen it hung past the bottom and the next section painted over it: the DOM was
+// right, the request was right, and nothing was on screen.
+{
+  const strip = d.getElementById("wishes-box");
+  check("the wishes strip is in the section's flow",
+    strip?.parentElement?.id, "guestbook");
+  check("and not inside the book's fixed canvas",
+    strip?.closest(".gb__stage, .gb__wrap") === null, true);
+}
+
 check("both names close the page", text(d, ".thanks__names"), `${W.groom.name} - ${W.bride.name}`);
 
 // motion: nothing may be left invisible, and reduced motion turns it all off

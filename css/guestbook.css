@@ -145,7 +145,9 @@
 }
 
 /* the wishes already written, as loose notes behind the book ---------------- */
-.notes { width: 100%; margin-top: var(--space-4); }
+/* in the section's own flow, under the canvas the book is drawn on, so the strip makes
+   its own room instead of hanging off the bottom of a box with a fixed ratio */
+.notes { width: 100%; margin-top: var(--space-4); padding-bottom: var(--space-4); }
 .notes__title { font-family: var(--font-display); color: var(--gold); text-align: center; margin-bottom: 14px; }
 .notes__strip {
   display: flex; gap: 16px;
@@ -199,7 +201,7 @@
   .book__pick { flex: 1 1 0; height: 36px; padding: 0 10px; font-size: 13px; }
   .book__send { flex: 1 1 0; height: 36px; padding: 0 10px; font-size: 14px; white-space: nowrap; }
   .book__done { font-size: 17px; padding-top: 34px; }
-  .notes { width: 394px; max-width: 100%; }
+  .notes { width: 394px; max-width: 100%; margin-inline: auto; }
   .notes__title { font-size: 22px; }
   .note { width: 226px; height: 174px; padding: 12px 15px 10px; line-height: 25px; background-size: 100% 25px; }
   .note__text { font-size: 12px; }
@@ -218,7 +220,7 @@
   .book__row input, .book__row select { font-size: 22px; line-height: 34px; }
   .book__message { font-size: 21px; height: calc(var(--book-lh) * 4); }
   .book__done { font-size: 26px; padding-top: 120px; }
-  .notes { width: 900px; max-width: 100%; }
+  .notes { width: 900px; max-width: 100%; margin-inline: auto; }
   .notes__title { font-size: 34px; }
   .note { width: 264px; height: 196px; padding: 14px 18px 12px; line-height: 28px; background-size: 100% 28px; }
   .note__text { font-size: 16px; }
