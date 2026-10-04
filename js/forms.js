@@ -103,14 +103,14 @@
       if (!w?.wish) continue;
       const node = tpl.content.firstElementChild.cloneNode(true);
       node.querySelector(".note__text").textContent = w.wish;
-      node.querySelector(".note__by b").textContent = w.name || "Một người bạn";
-      const rel = node.querySelector(".note__relation");
-      if (w.relation) rel.textContent = ` · ${w.relation}`; else rel.remove();
+      node.querySelector(".note__by").textContent = w.name || "Một người bạn";
+      node.querySelector(".note__open")?.addEventListener("click", () => AK.openWish?.(w));
       frag.append(node);
     }
     if (!frag.childElementCount) return;
     if (first) box.prepend(frag); else box.append(frag);
     if (outer) outer.hidden = false;
+    if (AK.runCredits) AK.runCredits(box);
   }
 
   function loadWishes() {
@@ -119,7 +119,11 @@
     const url = endpoint + (endpoint.includes("?") ? "&" : "?") + "what=wishes";
     fetch(url)
       .then((r) => (r.ok ? r.json() : []))
-      .then((list) => addWishes(Array.isArray(list) ? list : []))
+      .then((list) => {
+        const wishes = Array.isArray(list) ? list : [];
+        addWishes(wishes);
+        if (AK.startWishToasts) AK.startWishToasts(wishes);
+      })
       .catch(() => { /* a guest should see the form, not a failure to load */ });
   }
 

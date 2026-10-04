@@ -119,7 +119,7 @@ check("five relations", d.querySelectorAll("#wish-relation option").length, 5);
 d.getElementById("wish-name").value = "Nguyễn Thu Hà";
 d.getElementById("wish-text").value = "Chúc hai bạn trăm năm hạnh phúc";
 d.getElementById("wish-form").dispatchEvent(new window.Event("submit", { cancelable: true, bubbles: true }));
-check("the note appears", d.querySelectorAll(".notes__strip .note").length, 1);
+check("the note appears", d.querySelectorAll(".notes__track .note:not(.note--copy)").length, 1);
 check("the notes box is revealed", d.getElementById("wishes-box").hidden, false);
 check("and the form says thank you", d.querySelector(".book__done").hidden, false);
 

@@ -26,6 +26,9 @@
   --dock-pulse-out: rgb(195 29 29 / 0);
   --hy-red: #9a2e2a;
   /* the words on the red panel, read off the same mark */
+  /* a mask reads only the alpha channel, so the colour here is never seen; it is a
+     token all the same, because a raw one in a stylesheet is how the rest crept in */
+  --mask-solid: rgb(0 0 0);
   --door-ink: #f7e7c8;
   --door-ink-soft: rgb(247 231 200 / 0.55);
   --door-ink-wash: rgb(247 231 200 / 0.14);                /* read off the double-happiness panel itself */

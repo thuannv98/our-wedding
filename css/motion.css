@@ -79,7 +79,7 @@
   .section :is(h2, h3, p, blockquote, figcaption, legend, label),
   .cover__date, .cover__title, .cover__names,
   .couple__title, .nameplate__name, .couple__parents, .couple__home,
-  .book__title, .book__sub, .notes__title, .note__text, .note__by,
+  .book__title, .book__sub, .note__text, .note__by,
   .lead, .foreword__text {
     transition: transform 150ms linear;
   }
@@ -87,7 +87,7 @@
   .cover__date:hover, .cover__title:hover, .cover__names:hover,
   .couple__title:hover, .nameplate__name:hover,
   .couple__parents:hover, .couple__home:hover,
-  .book__title:hover, .notes__title:hover, .note__text:hover, .note__by:hover,
+  .book__title:hover, .note__text:hover, .note__by:hover,
   .lead:hover, .foreword__text:hover {
     transform: scale(1.03);
   }
