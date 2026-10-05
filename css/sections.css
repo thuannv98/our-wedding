@@ -461,11 +461,42 @@
 .story { padding-block: 33px; }
 .story__grid { display: grid; gap: var(--space-4); align-items: start; }
 
+/* The box both faces share. The ratio lives here now, so the drawing and the cluster
+   turn over inside one shape that never changes size. */
+.story__flip {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 0.8239;
+  perspective: 1400px;
+}
+.story__face {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  transition: transform 1.5s var(--ease);
+  transform-style: preserve-3d;
+}
+.story__face--one { transform: rotateY(0deg); }
+.story__face--many { transform: rotateY(180deg); }
+/* turned over: the drawing goes away edge-on and the photographs come round */
+.story__flip.is-turned .story__face--one { transform: rotateY(-180deg); }
+.story__flip.is-turned .story__face--many { transform: rotateY(0deg); }
+
+/* The drawing keeps its own proportions, is framed like the photographs, and sits in
+   the middle of the box both ways. Two thirds of the height, so it reads as one picture
+   rather than filling the room the four of them share. */
+.story__face--one { display: grid; place-items: center; }
+.story__drawing {
+  height: 83.4%; width: auto; max-width: 100%;
+  object-fit: contain;
+  border: 7px solid var(--frame);
+  border-radius: 16px;
+  box-shadow: var(--photo-drop);
+}
+
 .story__photos {
   list-style: none; margin: 0; padding: 0;
   position: relative;
-  aspect-ratio: 0.8239;
-  width: 100%;
+  width: 100%; height: 100%;
 }
 .story__photo { position: absolute; margin: 0; }
 .story__photo img {
@@ -486,7 +517,8 @@
 .story__photo:nth-child(2), .story__photo:nth-child(4) { z-index: 1; }
 
 .story__words { display: grid; gap: var(--space-3); text-align: left; }
-.story__words h2 { text-align: left; }
+/* the heading over the middle of the block, the paragraphs still ranged left */
+.story__words h2 { text-align: center; }
 /* three paragraphs now, set apart from each other but closer than the heading is */
 .story__text { display: grid; gap: var(--space-2); }
 
@@ -500,7 +532,9 @@
 @media (max-width: 767px) {
   /* on a phone the cluster is nearly the full width and the words sit under it */
   .story { padding-block: 34px; }
-  .story__photos { aspect-ratio: 0.766; width: 92.4%; margin-inline: auto; }
+  /* the words follow straight on from the pictures, with nothing between */
+  .story__grid { gap: 0; }
+  .story__flip { aspect-ratio: 0.766; width: 92.4%; margin-inline: auto; }
   .story__words { padding-top: var(--space-4); }
 }
 
@@ -577,3 +611,12 @@
 .doors.is-gone { display: none; }
 
 @media (prefers-reduced-motion: reduce) { .doors { display: none; } }
+
+/* Asked for stillness, the two faces do not turn: the drawing stands and the four
+   photographs stay behind it rather than flickering in place. */
+@media (prefers-reduced-motion: reduce) {
+  .story__face { transition: none; }
+  .story__face--many { transform: rotateY(180deg); }
+  .story__flip.is-turned .story__face--one { transform: rotateY(0deg); }
+  .story__flip.is-turned .story__face--many { transform: rotateY(180deg); }
+}

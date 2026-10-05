@@ -11,6 +11,7 @@
     if (!box || !wish || !wish.wish) return;
     box.querySelector(".wishfull__text").textContent = wish.wish;
     box.querySelector(".wishfull__by").textContent = wish.name || "Một người bạn";
+    if (box.open) return;                 // asking twice throws
     if (typeof box.showModal === "function") box.showModal();
     else box.setAttribute("open", "");
   }

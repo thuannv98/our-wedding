@@ -3,6 +3,7 @@
    rather than a flourish. The gate is what this checks. */
 import { JSDOM, VirtualConsole } from '/Users/thuann/projects/saas-ak-app/node_modules/.pnpm/jsdom@30.0.1_@noble+hashes@2.2.0/node_modules/jsdom/lib/api.js';
 import path from "node:path";
+import fs from "node:fs";
 
 const root = path.resolve(import.meta.dirname, "..");
 const WISHES = [
@@ -19,11 +20,24 @@ let bookSeen = () => false;   // the test decides whether the guest book is on s
 const dom = await JSDOM.fromFile(path.join(root, "index.html"), {
   runScripts: "dangerously", resources: "usable", pretendToBeVisual: true, virtualConsole: vc,
   beforeParse(w) {
+    // jsdom refuses localStorage on a file:// document, the same way a browser does in a
+    // private window. The page copes with that; the check below needs somewhere to look.
+    const mem = new Map();
+    Object.defineProperty(w, "localStorage", {
+      configurable: true,
+      value: {
+        getItem: (k) => (mem.has(k) ? mem.get(k) : null),
+        setItem: (k, v) => mem.set(k, String(v)),
+        removeItem: (k) => mem.delete(k),
+      },
+    });
     w.HTMLMediaElement.prototype.play = () => Promise.resolve();
     w.HTMLMediaElement.prototype.load = () => {};
-    w.fetch = (u) => Promise.resolve({
-      ok: true, json: async () => (String(u).includes("what=wishes") ? WISHES : []),
-    });
+    w.__asked = 0;
+    w.fetch = (u) => {
+      if (String(u).includes("what=wishes")) w.__asked++;
+      return Promise.resolve({ ok: true, json: async () => (String(u).includes("what=wishes") ? WISHES : []) });
+    };
     w.IntersectionObserver = class {
       constructor(cb) { this.cb = cb; }
       observe(el) { this.cb([{ isIntersecting: el.id === "guestbook" ? bookSeen() : true, target: el }], this); }
@@ -42,6 +56,11 @@ const check = (label, got, want) => {
   console.log(`${ok ? "ok  " : "FAIL"} ${label}` + (ok ? "" : `  got ${JSON.stringify(got)} want ${JSON.stringify(want)}`));
 };
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+// watched rather than sampled at an instant: the page runs its own cycle alongside
+const until = async (want, ms = 1500) => {
+  for (let t = 0; t < ms; t += 10) { if (want()) return true; await wait(10); }
+  return false;
+};
 const card = () => d.querySelector(".wisht");
 const last = () => [...d.querySelectorAll(".wisht")].pop();
 const shows = (c) => !!c && !c.hidden && c.classList.contains("is-in");
@@ -137,6 +156,93 @@ check("then it drifts again", shows(last()), true);
   }).map((r) => r.selectorText).filter(Boolean);
   check("the mark between wishes is on every wish, not just the later ones",
     marks.some((sel) => /\.note\s*\+\s*\.note::before/.test(sel)), false);
+}
+
+// Two cycles on one page meant two sets of timers: a card arrived and was replaced at
+// once, then kept changing. Whoever asks last gets the only cycle.
+{
+  window.AK.startWishToasts(WISHES);
+  window.AK.startWishToasts(WISHES);
+  window.AK.startWishToasts(WISHES);
+  check("however often it is started, there is one card", d.querySelectorAll(".wisht").length, 1);
+
+  window.AK.startWishToasts.timing = { first: 20, shown: 400, gap: 400 };
+  window.AK.startWishToasts(WISHES);
+  await until(() => shows(last()));
+  const first = d.querySelector(".wisht__text").textContent;
+  await wait(200);                       // well inside the time one card is held
+  check("and a card is not replaced the moment it arrives",
+    d.querySelector(".wisht__text").textContent, first);
+}
+
+// Apps Script answers slowly when cold, so what came back last time is kept and shown
+// at once on the next visit.
+check("the wishes are kept for next time",
+  JSON.parse(window.localStorage.getItem("ak:wishes") || "[]").length, WISHES.length);
+
+// Nothing can push a wish to a page that is open already, so the page asks again. A
+// guest who writes one sees it at once; the sheet is asked again shortly after, which
+// puts it in the order everyone else sees and brings in anything written meanwhile.
+{
+  const before = window.__asked;
+  await window.AK.askForWishes();
+  check("the page can ask the sheet again", window.__asked > before, true);
+
+  const box = d.getElementById("wishes");
+  const was = box.querySelectorAll(".note:not(.note--copy)").length;
+  d.getElementById("wish-name").value = "Người mới";
+  d.getElementById("wish-text").value = "Chúc mừng hai bạn.";
+  d.getElementById("wish-form").dispatchEvent(new window.Event("submit", { cancelable: true, bubbles: true }));
+  check("a wish just written is on the page at once",
+    box.querySelectorAll(".note:not(.note--copy)").length, was + 1);
+}
+
+// The card is ruled paper, so the words have to sit on the rules. The ruling, the wish
+// and the name are three numbers that must agree, in each width separately: the narrow
+// card was put right and the wide one kept the narrow ruling under wider-set text, which
+// drifts a little further off every line.
+{
+  const css = fs.readFileSync(path.join(root, "css/guestbook.css"), "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+  // every media block out, which leaves what applies at any width
+  const base = css.replace(/@media[^{]+\{(?:[^{}]|\{[^{}]*\})*\}/g, "");
+  // every wide block in the file, not the first: the card's own is the second of three
+  const wide = [...css.matchAll(/@media \(min-width: 768px\)[^{]*\{((?:[^{}]|\{[^{}]*\})*)\}/g)]
+    .map((m) => m[1]).join("\n");
+
+  const num = (block, re) => { const m = block.match(re); return m ? Number(m[1]) : null; };
+  const ruling = (b) => num(b, /\.wisht\s*\{[^}]*var\(--rule\)\s*[\d.]+px\s+([\d.]+)px/);
+  const line = (b, sel) => num(b, new RegExp("\\" + sel + "\\s*\\{[^}]*line-height:\\s*([\\d.]+)px"));
+
+  for (const [name, block] of [["narrow", base], ["wide", wide]]) {
+    const step = ruling(block);
+    // stated, not absent: a missing number on both sides would agree with itself
+    check(`the ${name} card states a ruling`, typeof step === "number" && step > 0, true);
+    check(`the ${name} card's wish sits on its ruling`, line(block, ".wisht__text"), step);
+    check(`and so does the ${name} card's name`, line(block, ".wisht__by"), step);
+  }
+
+  // The browser holds a modal dialog fixed and centred. Positioning it here puts it back
+  // in the flow at the foot of the document, and opening it from the middle of the page
+  // carries the reader down there.
+  check("the sheet leaves its own placing to the browser",
+    /\.wishfull(\[open\])?\s*\{[^}]*position\s*:/.test(css), false);
+
+  // The lines stop short of the card's edge while the paper runs right to it. The number
+  // of layers comes from background-image alone, so a background-color plus one image is
+  // one layer, the second clip is dropped, and the paper gets cut back with the lines.
+  check("the ruling keeps inside the card's padding",
+    /\.wisht\s*\{[^}]*background-clip:\s*content-box\s*,\s*border-box/.test(base), true);
+  for (const [name, block] of [["narrow", base], ["wide", wide]]) {
+    const m = block.match(/\.wisht\s*\{[^}]*background-image:([^;]*);/);
+    // commas at the top level only: every gradient has commas of its own inside it
+    let depth = 0, layers = m ? 1 : 0;
+    for (const ch of m ? m[1] : "") {
+      if (ch === "(") depth++;
+      else if (ch === ")") depth--;
+      else if (ch === "," && depth === 0) layers++;
+    }
+    check(`the ${name} card paints the paper as its own layer`, layers, 2);
+  }
 }
 
 console.log(fail ? `\n${fail} failing` : "\nall good");

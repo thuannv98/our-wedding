@@ -268,9 +268,15 @@
   width: 268px; max-width: calc(100vw - var(--gutter) * 2);
   padding: 12px 15px 10px;
   border-radius: 4px;
-  background: var(--paper);
   box-shadow: 0 1px 0 var(--note-line), var(--shadow);
-  background-image: repeating-linear-gradient(180deg, transparent 0 25px, var(--rule) 25px 26px);
+  /* The ruled lines stop where the words stop, and the paper behind them fills the card
+     corner to corner. That needs two layers, not a layer and a background-color: the
+     number of layers comes from background-image alone, so with one image the second
+     clip is dropped and the colour is cut to the content box with the lines. */
+  background-image:
+    repeating-linear-gradient(180deg, transparent 0 25px, var(--rule) 25px 26px),
+    linear-gradient(var(--paper), var(--paper));
+  background-clip: content-box, border-box;
   background-position: 0 7px;
   transform: translateX(calc(100% + var(--gutter)));
   opacity: 0;
@@ -293,9 +299,17 @@
 }
 
 @media (min-width: 768px) {
-  .wisht { width: 300px; }
+  .wisht {
+    width: 300px;
+    /* both layers again: naming only the ruling here would leave one layer and take the
+       paper with it */
+    background-image:
+      repeating-linear-gradient(180deg, transparent 0 27px, var(--rule) 27px 28px),
+      linear-gradient(var(--paper), var(--paper));
+    background-position: 0 6px;
+  }
   .wisht__text { font-size: 14px; line-height: 28px; }
-  .wisht__by { font-size: 18px; }
+  .wisht__by { font-size: 18px; line-height: 28px; }
 }
 
 @media (prefers-reduced-motion: reduce) { .wisht { display: none; } }
@@ -311,7 +325,9 @@
   box-shadow: 0 1px 0 var(--note-line), var(--shadow);
   overflow: auto;
 }
-.wishfull[open] { position: relative; }
+/* The browser holds a modal dialog fixed and centred on its own. Giving it a position
+   here put it back in the flow at the foot of the document, and opening it carried the
+   page down there with it. It is already a containing block for the close button. */
 .wishfull__close {
   position: absolute; top: 6px; right: 10px;
   border: 0; background: none; cursor: pointer;

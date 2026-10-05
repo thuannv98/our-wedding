@@ -16,6 +16,7 @@ window.WEDDING = {
     "photoMobile": "img/6E7A0968-m.jpg"
   },
   "story": {
+    "cover": "img/huynh-truong.jpg",
     "photos": [
       "img/b079.jpg",
       "img/6E7A1013.jpg",

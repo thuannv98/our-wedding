@@ -1,19 +1,24 @@
 /* The wishes already written, drifting past the corner of the page.
  *
- * One card at a time, low and to the left so it never reaches the controls on the other
- * side. It holds its tongue while a guest is typing, while the tab is in the background,
- * and while the guest book itself is on screen, where the whole list is there to read.
+ * One card at a time, high and to the right: the foot of the screen is where a thumb
+ * rests and where the music button sits. It holds its tongue while a guest is typing,
+ * while the tab is in the background, and while the guest book itself is on screen,
+ * where the whole list is there to read.
  */
 (function (AK) {
   "use strict";
 
+  var live = null;      // the cycle now running, if any
+
   function startWishToasts(list) {
-    // looked up where it is used, not captured here, so the pacing can be changed after
-    // the cycle has already started
-    function T() { return startWishToasts.timing; }
+    // Starting a second cycle over the first left two sets of timers on one page, and a
+    // card replaced itself the moment it arrived. Whoever asks last gets the only cycle.
+    if (live) { live.stop(); live = null; }
 
     if (!list || !list.length) return;
     if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    function T() { return startWishToasts.timing; }
 
     var el = document.createElement("div");
     el.className = "wisht";
@@ -25,15 +30,7 @@
     var text = el.querySelector(".wisht__text");
     var who = el.querySelector(".wisht__by");
 
-    var at = 0, timer = null, bookInView = false, current = null;
-
-    // a card cut short is still worth reading: tapping it opens the whole wish, and the
-    // card goes at once rather than sliding out from under the sheet
-    el.addEventListener("click", function () {
-      if (!current) return;
-      hide();
-      if (AK.openWish) AK.openWish(current);
-    });
+    var at = 0, timer = null, bookInView = false, current = null, watcher = null;
 
     // typing a wish of your own, or reading the ones already there, is not the moment
     function quiet() {
@@ -42,9 +39,12 @@
       return !!(a && a.closest && a.closest("form"));
     }
 
+    function next(after) { clearTimeout(timer); timer = setTimeout(show, after); }
+
     function hide() {
+      clearTimeout(timer);                     // the turn that is ending may still be due
       el.classList.remove("is-in");
-      timer = setTimeout(function () { el.hidden = true; next(T().gap); }, 400);   // after the slide out
+      timer = setTimeout(function () { el.hidden = true; next(T().gap); }, 400);
     }
 
     function show() {
@@ -61,24 +61,40 @@
       timer = setTimeout(hide, T().shown);
     }
 
-    function next(after) { clearTimeout(timer); timer = setTimeout(show, after); }
+    // a card cut short is still worth reading: tapping it opens the whole wish
+    el.addEventListener("click", function () {
+      if (!current) return;
+      hide();
+      if (AK.openWish) AK.openWish(current);
+    });
 
-    if (typeof IntersectionObserver === "function") {
-      var book = document.getElementById("guestbook");
-      if (book) {
-        new IntersectionObserver(function (entries) {
-          bookInView = entries[0].isIntersecting;
-        }, { threshold: 0.2 }).observe(book);
-      }
-    }
-    document.addEventListener("visibilitychange", function () {
+    function onVisibility() {
       if (document.hidden) { clearTimeout(timer); el.hidden = true; el.classList.remove("is-in"); }
       else next(T().gap);
-    });
+    }
+    document.addEventListener("visibilitychange", onVisibility);
+
+    var book = document.getElementById("guestbook");
+    if (typeof IntersectionObserver === "function" && book) {
+      watcher = new IntersectionObserver(function (entries) {
+        bookInView = entries[0].isIntersecting;
+      }, { threshold: 0.2 });
+      watcher.observe(book);
+    }
 
     function begin() { next(T().first); }
     if (document.documentElement.classList.contains("doors-open")) begin();
     else window.addEventListener("ak:doors-open", begin, { once: true });
+
+    live = {
+      stop: function () {
+        clearTimeout(timer);
+        window.removeEventListener("ak:doors-open", begin);
+        document.removeEventListener("visibilitychange", onVisibility);
+        if (watcher) watcher.disconnect();
+        el.remove();
+      },
+    };
   }
 
   // named rather than buried, so the pacing can be read off in one place and a test can

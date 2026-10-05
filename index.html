@@ -93,7 +93,14 @@
 <!-- our story --------------------------------------------------------------- -->
 <section class="section story" id="story" data-ground="xanh" aria-labelledby="story-title">
   <div class="container story__grid">
-    <ul class="story__photos" data-list="story.photos"></ul>
+    <!-- two faces in the one place: the drawing, then the four photographs, turning
+         over into each other -->
+    <div class="story__flip" id="story-flip">
+      <div class="story__face story__face--one">
+        <img class="story__drawing" data-src="story.cover" alt="" loading="lazy" />
+      </div>
+      <ul class="story__photos story__face story__face--many" data-list="story.photos"></ul>
+    </div>
     <div class="story__words">
       <h2 id="story-title" data-anim="fadeInLeft">Chuyện chúng mình</h2>
       <div class="story__text" data-lines="text.ourStory" data-anim="fadeInLeft"></div>
@@ -427,6 +434,7 @@
 <script src="js/bind.js"></script>
 <script src="js/doors.js"></script>
 <script src="js/story.js"></script>
+<script src="js/story-flip.js"></script>
 <script src="js/ceremonies.js"></script>
 <script src="js/calendar.js"></script>
 <script src="js/album.js"></script>

@@ -88,6 +88,7 @@
         addWishes([{ name: f.name.trim(), relation: f.relation, wish: f.wish.trim() }], true);
       }
       complete(wish, f.name.trim());
+      setTimeout(() => AK.askForWishes?.(), 4000);
     });
 
     loadWishes();
@@ -113,18 +114,89 @@
     if (AK.runCredits) AK.runCredits(box);
   }
 
-  function loadWishes() {
+  // Apps Script answers in a second or two warm and a good deal longer cold, which is a
+  // long time to look at a page with no wishes on it. What came back last time is kept
+  // here and shown at once, then replaced the moment the real answer lands.
+  const KEPT = "ak:wishes";
+
+  // Nothing can push a new wish to a page that is already open: Apps Script has no way to
+  // call out, and a page served as files has nothing listening. So the page asks, and it
+  // asks only while someone is in front of the guest book with the tab in view. Left to
+  // run in a forgotten tab this would knock on Google's door every minute until the
+  // battery went flat.
+  const EVERY = 45000;
+
+  let shown = [];       // what the page is drawing now
+  let asking = false;
+  let asked = 0;
+
+  function remember(list) {
+    try { localStorage.setItem(KEPT, JSON.stringify(list)); } catch { /* private window */ }
+  }
+  function recall() {
+    try {
+      const kept = JSON.parse(localStorage.getItem(KEPT) || "[]");
+      return Array.isArray(kept) ? kept : [];
+    } catch { return []; }
+  }
+
+  function showWishes(list) {
+    shown = list;
+    const box = document.getElementById("wishes");
+    if (box) box.replaceChildren();
+    addWishes(list);
+    if (AK.startWishToasts) AK.startWishToasts(list);
+  }
+
+  function ask() {
     const endpoint = get("form.endpoint");
-    if (!endpoint || typeof fetch !== "function") return;
+    if (!endpoint || typeof fetch !== "function" || asking) return Promise.resolve();
+    asking = true;
+    asked = Date.now();
     const url = endpoint + (endpoint.includes("?") ? "&" : "?") + "what=wishes";
-    fetch(url)
-      .then((r) => (r.ok ? r.json() : []))
+    return fetch(url)
+      .then((r) => (r.ok ? r.json() : null))
       .then((list) => {
-        const wishes = Array.isArray(list) ? list : [];
-        addWishes(wishes);
-        if (AK.startWishToasts) AK.startWishToasts(wishes);
+        if (!Array.isArray(list)) return;
+        remember(list);
+        // redrawing starts the roll over, so it happens only when there is something new
+        if (JSON.stringify(list) !== JSON.stringify(shown)) showWishes(list);
       })
-      .catch(() => { /* a guest should see the form, not a failure to load */ });
+      .catch(() => { /* a guest should see the form, not a failure to load */ })
+      .finally(() => { asking = false; });
+  }
+
+  function watchWishes() {
+    let timer = null;
+    let near = false;
+
+    const due = () => Date.now() - asked >= EVERY;
+    const stop = () => { clearInterval(timer); timer = null; };
+    const start = () => {
+      if (timer || !near || document.hidden) return;
+      if (due()) ask();
+      timer = setInterval(() => { if (!document.hidden) ask(); }, EVERY);
+    };
+
+    const book = document.getElementById("guestbook");
+    if (typeof IntersectionObserver === "function" && book) {
+      new IntersectionObserver((entries) => {
+        near = entries[0].isIntersecting;
+        if (near) start(); else stop();
+      }, { threshold: 0.1 }).observe(book);
+    }
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) stop(); else start();
+    });
+
+    AK.askForWishes = ask;      // so a guest who has just written one sees the rest too
+  }
+
+  function loadWishes() {
+    const kept = recall();
+    if (kept.length) showWishes(kept);
+    ask();
+    watchWishes();
   }
 
   AK.setupForms = setupForms;
