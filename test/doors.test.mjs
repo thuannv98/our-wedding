@@ -1,7 +1,7 @@
 /* The doors wait for a tap, and the cover's entrance waits for them. jsdom has no
    IntersectionObserver, so the watcher is stood in for here; without that the fallback
    path runs and this would pass without ever exercising the gate. */
-import { JSDOM, VirtualConsole } from '/Users/thuann/projects/saas-ak-app/node_modules/.pnpm/jsdom@30.0.1_@noble+hashes@2.2.0/node_modules/jsdom/lib/api.js';
+import { JSDOM, VirtualConsole } from "jsdom";
 import path from "node:path";
 import fs from "node:fs";
 

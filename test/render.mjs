@@ -1,6 +1,6 @@
 /* The scripts are plain scripts now, so the test lets jsdom load and run the page
    exactly as a browser does rather than importing the pieces by hand. */
-import { JSDOM, VirtualConsole } from '/Users/thuann/projects/saas-ak-app/node_modules/.pnpm/jsdom@30.0.1_@noble+hashes@2.2.0/node_modules/jsdom/lib/api.js';
+import { JSDOM, VirtualConsole } from "jsdom";
 import path from "node:path";
 
 const root = path.resolve(import.meta.dirname, "..");

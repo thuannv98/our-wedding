@@ -1,6 +1,6 @@
 /* The drawing and the four photographs turn over into each other. The drawing is what a
    guest has not seen before, so it is the face that greets them. */
-import { JSDOM, VirtualConsole } from '/Users/thuann/projects/saas-ak-app/node_modules/.pnpm/jsdom@30.0.1_@noble+hashes@2.2.0/node_modules/jsdom/lib/api.js';
+import { JSDOM, VirtualConsole } from "jsdom";
 import fs from "node:fs";
 import path from "node:path";
 

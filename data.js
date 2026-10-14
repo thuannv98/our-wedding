@@ -33,7 +33,7 @@ window.WEDDING = {
     "mother": "Maria Ngô Thị Lan",
     "home": "Xã Phú Xuân, Tỉnh Đăk Lăk",
     "photo": "img/psd-phong-trang.jpg",
-    "intro": "• Giới thiệu: Coder chính hiệu, dành cả thanh xuân để debug hệ thống.\n• Đặc điểm nhận dạng: Ưa chuộng mọi thứ có logic rõ ràng. Pin tụt cực nhanh nếu bị buộc phải hướng ngoại. Khi pin yếu, tự động kích hoạt chế độ \"trốn vào góc riêng\" để sạc lại năng lượng.\n• Kỹ năng đặc biệt: Tìm ra lỗi hệ thống siêu nhanh. Riêng vấn đề của cánh đối diện thì chắc cần dành cả đời để phân tích và hiểu.\n• Kinh nghiệm: Xây dựng thành công mối quan hệ trong suốt 3 năm qua. Hệ thống hoạt động mượt mà sau rất nhiều lần sửa lỗi (và sửa sai) cùng nhau và chuẩn bị phát hành bản chính thức.\n• Chỉ số nguy hiểm: 0%. Cực kỳ lành tính, dễ nuôi, chỉ cần cho ăn đầy đủ và cấp đủ Wi-Fi là được.\n• Trạng thái hiện tại: Status code: 200 OK (Đã kết nối thành công và trọn đời với ThuyThanh).",
+    "intro": "• Giới thiệu: Coder chính hiệu, dành cả thanh xuân để debug hệ thống.\n• Đặc điểm nhận dạng: Ưa chuộng mọi thứ có logic rõ ràng. Pin tụt cực nhanh nếu bị buộc phải hướng ngoại. Khi pin yếu, tự động kích hoạt chế độ \"trốn vào góc riêng\" để sạc lại năng lượng.\n• Kỹ năng đặc biệt: Tìm ra lỗi hệ thống siêu nhanh. Nhưng mà vấn đề của cánh đối diện thì chắc cần dành cả đời để phân tích.\n• Kinh nghiệm: Xây dựng thành công mối quan hệ trong suốt 3 năm qua. Hệ thống hoạt động mượt mà sau rất nhiều lần sửa lỗi (và sửa sai) cùng nhau và chuẩn bị phát hành bản chính thức.\n• Chỉ số nguy hiểm: 0%. Cực kỳ lành tính, dễ nuôi, chỉ cần cấp đủ Wi-Fi là được.\n• Trạng thái hiện tại: Status code: 200 OK (Đã kết nối thành công và trọn đời với ThuyThanh).",
     "quote": "Mỗi ngày thức dậy bạn nghĩ đến một ai đó, trước khi đi ngủ bạn nghĩ đến một ai đó. Đó là một ngày trọn vẹn.",
     "portrait": [
       "img/psd-phong-trang.jpg",
@@ -54,7 +54,7 @@ window.WEDDING = {
     "mother": "Maria Phạm Thị Mơ",
     "home": "Xã Quảng Sơn, Tỉnh Lâm Đồng",
     "photo": "img/6E7A1333.jpg",
-    "intro": "• Giới thiệu: Sỏi tiếng Trung chính hiệu, sở hữu kho từ vựng phong phú, có thể dịch mọi văn bản phức tạp\n• Đặc điểm nhận dạng: Đam mê phim cổ trang, yêu thích vẻ đẹp của những nét chữ và các thanh điệu nhẹ nhàng. Dung lượng pin sinh học: Tràn trề năng lượng, là trạm sạc không dây di động giúp anh đối diện nạp lại pin ngay lập tức.\n• Kỹ năng đặc biệt: Bắn tiếng Trung như gió, nói câu nào ngọt ngào câu đấy. Có năng lực hóa giải mọi logic bằng ánh mắt.\n• Kinh nghiệm vận hành: 3 năm làm quản lý độc quyền. Luôn biết cách chốt mọi hợp đồng.\n• Chỉ số quyền lực: 99.9%. Nắm giữ \"master key\".\n• Trạng thái hiện tại: Đã ký duyệt bản hợp đồng hiệu lực mãi mãi với VanThuan.",
+    "intro": "• Giới thiệu: Sỏi tiếng Trung chính hiệu, sở hữu kho từ vựng phong phú, có thể dịch mọi văn bản phức tạp\n• Đặc điểm nhận dạng: Đam mê phim cổ trang, yêu thích vẻ đẹp của những nét chữ và các thanh điệu nhẹ nhàng. Dung lượng pin sinh học: Tràn trề năng lượng, là trạm sạc không dây di động giúp anh đối diện nạp lại pin ngay lập tức.\n• Kỹ năng đặc biệt: Bắn tiếng Trung như gió. Có năng lực hóa giải mọi logic bằng ánh mắt.\n• Kinh nghiệm vận hành: 3 năm làm quản lý độc quyền. Luôn biết cách chốt mọi hợp đồng.\n• Chỉ số quyền lực: 99.9%. Nắm giữ \"master key\".\n• Trạng thái hiện tại: Đã ký duyệt bản hợp đồng hiệu lực mãi mãi với VanThuan.",
     "quote": "Cái gọi là duyên phận, chính là trong ngàn vạn người gặp được người cần gặp, không sớm một bước cũng không muộn một bước.",
     "portrait": [
       "img/6E7A1333.jpg",
@@ -120,7 +120,7 @@ window.WEDDING = {
   "text": {
     "openInvite": "Chạm để mở thiệp",
     "saveTheDate": "Save The Date",
-    "ourStory": "Một ngày thu, anh chàng Dev vô tư dùng chút kiến thức IT giúp đỡ cô sinh viên Thùy Thanh. Sợi dây duyên số bắt đầu, đưa anh trở thành tân Dự trưởng ngay trước thềm Trung Thu.\nNhững ngày cùng phục vụ, gói quà, làm lồng đèn đoạt giải đã nhen nhóm cho một tình yêu kỳ lạ. Dù đội mưa hứng nắng, hai đứa vẫn cứ cười vô tư.\nHơn 3 năm qua đi với đủ vui buồn, mâu thuẫn và thấu hiểu. Hai đứa Dự trưởng ngày nào giờ đã là Huynh trưởng. Mùa trung thu năm nay, chúng mình chính thức về một nhà, sẵn sàng cùng người thương xây dựng tổ ấm nhỏ.",
+    "ourStory": "Một ngày thu, anh chàng Dev vô tư dùng chút kiến thức giúp đỡ cô sinh viên Thùy Thanh. Sợi dây duyên số bắt đầu, đưa anh trở thành tân Dự trưởng ngay trước thềm Trung Thu.\nNhững ngày cùng phục vụ, gói quà, làm lồng đèn đoạt giải đã nhen nhóm cho một tình yêu đơn sơ thú vị.\nHơn 3 năm qua đi với đủ vui buồn, mâu thuẫn và thấu hiểu. Hai đứa Dự trưởng ngày nào giờ trở thành Huynh trưởng. Mùa trung thu năm nay, chúng mình chính thức về một nhà, sẵn sàng cùng người thương xây dựng tổ ấm nhỏ.",
     "invitation": "Đến hiệp dâng Thánh lễ Hôn phối và tham dự buổi tiệc chung vui cùng gia đình chúng mình",
     "foreword": "Bữa tiệc được nâng niu, chỉn chu từng chi tiết đang chờ bạn đến tận hưởng khoảnh khắc thiêng liêng nhất trong cuộc đời chúng mình. Sẽ trọn vẹn hơn khi bạn cùng chúng mình ghi lại ký ức vô giá này.",
     "rsvpLead": "Sự có mặt của bạn là niềm vui lớn đối với chúng mình. Vui lòng xác nhận để buổi tiệc được chuẩn bị thật chỉn chu nhé!"

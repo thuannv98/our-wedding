@@ -107,7 +107,7 @@ check("no key in data.js is dead", topLevel.filter((k) => !source.includes(k)), 
 // natural size, how the cards piled up, and how the honeypot appeared on the page.
 // A child named by such a rule must be named more specifically than the blanket.
 {
-  const { JSDOM } = await import("/Users/thuann/projects/saas-ak-app/node_modules/.pnpm/jsdom@30.0.1_@noble+hashes@2.2.0/node_modules/jsdom/lib/api.js");
+  const { JSDOM } = await import("jsdom");
   const doc = new JSDOM(html).window.document;
 
   // every rule in load order, each remembering which width it was written for

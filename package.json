@@ -1,0 +1,12 @@
+{
+  "name": "our-wedding",
+  "private": true,
+  "description": "Thiệp cưới Văn Thuận & Thanh Thuỳ. Trang tĩnh, không có bước dựng: index.html, css/, js/ và img/ chạy thẳng. jsdom ở đây chỉ để chạy bộ kiểm.",
+  "scripts": {
+    "test": "for t in test/*.test.mjs; do node \"$t\" || exit 1; done",
+    "deploy": "./deploy.sh"
+  },
+  "devDependencies": {
+    "jsdom": "^30.0.1"
+  }
+}

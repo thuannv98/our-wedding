@@ -1,7 +1,7 @@
 /* The wishes drift past the corner of the page, but not at every moment: a card over
    someone's half-written wish, or over the list they are already reading, is a nuisance
    rather than a flourish. The gate is what this checks. */
-import { JSDOM, VirtualConsole } from '/Users/thuann/projects/saas-ak-app/node_modules/.pnpm/jsdom@30.0.1_@noble+hashes@2.2.0/node_modules/jsdom/lib/api.js';
+import { JSDOM, VirtualConsole } from "jsdom";
 import path from "node:path";
 import fs from "node:fs";
 
