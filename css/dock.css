@@ -17,6 +17,13 @@
 }
 .music:hover { background: var(--gold-soft); transform: translateY(-2px); }
 .music__note { width: 22px; height: 22px; fill: currentColor; }
+
+/* The stroke behind is the button's own grey, so the line reads as a gap cut through
+   the note rather than a mark laid on top of it. */
+.music__slash line { stroke-linecap: round; }
+.music__slash line:first-child { stroke: var(--dock-grey); stroke-width: 5; }
+.music__slash line:last-child { stroke: currentColor; stroke-width: 2.2; }
+.music.is-playing .music__slash { display: none; }
 .music.is-playing { animation: disc 1.3s infinite; }
 .music.is-playing .music__note { animation: note 1.3s ease-in-out infinite; }
 @keyframes disc {

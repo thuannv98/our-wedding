@@ -367,6 +367,9 @@
 <button class="music" id="music" type="button" aria-pressed="false" aria-label="Bật tắt nhạc">
   <svg class="music__note" viewBox="0 0 24 24" aria-hidden="true">
     <path d="M9 18.5a2.5 2.5 0 1 1-2.5-2.5c.6 0 1.1.2 1.5.5V4l10-2v12.5a2.5 2.5 0 1 1-2.5-2.5c.6 0 1.1.2 1.5.5V6.3L9 7.9z"/>
+    <!-- struck through while nothing is playing: the two states were telling the two
+         apart by an animation alone, which is nothing to look at when it is still -->
+    <g class="music__slash"><line x1="4" y1="20" x2="20" y2="4" /><line x1="4" y1="20" x2="20" y2="4" /></g>
   </svg>
 </button>
 

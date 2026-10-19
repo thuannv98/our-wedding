@@ -49,10 +49,15 @@ check("the shape belongs to the box, not to one face", [ratioOn(".story__flip"),
 
 // only the drawing is smaller; the four photographs keep the room they always had, and
 // the drawing sits in the middle of that room both ways
-check("the drawing is the only one scaled back",
-  /\.story__drawing\s*\{[^}]*height:\s*83\.4%/.test(css), true);
+check("the drawing fills the height of the box",
+  /\.story__drawing\s*\{[^}]*height:\s*100%/.test(css), true);
 check("and it is centred in the box both ways",
   /\.story__face--one\s*\{[^}]*place-items:\s*center/.test(css), true);
+// A percentage height needs something fixed to measure against. An `auto` grid row takes
+// its height from the picture, so the picture had nothing to measure: it came out taller
+// than its box and hung out below it.
+check("and the row it sits in has a height of its own",
+  /\.story__face--one\s*\{[^}]*grid-template-rows:\s*100%/.test(css), true);
 check("the box itself is not shrunk", /\.story__flip\s*\{[^}]*width:\s*100%/.test(css), true);
 
 // Watched rather than sampled at a fixed instant: the page starts its own turning at

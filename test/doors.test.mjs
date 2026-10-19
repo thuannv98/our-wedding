@@ -72,5 +72,31 @@ check("a tap parts them", doors.classList.contains("is-open"), true);
 check("and says so once, for the music to hear", opened, 1);
 check("and they play once the doors part", cover.filter(shown).length, cover.length);
 
+// The button says what the visitor can hear. "play" fires when playback is asked for,
+// "playing" when sound actually starts, and the file is not fetched until the doors
+// open: marked from "play", the button claimed to be playing through seconds of silent
+// loading, and a tap then did the opposite of what it looked like it would do.
+{
+  const audio = d.getElementById("audio"), button = d.getElementById("music");
+  const fire = (name) => audio.dispatchEvent(new window.Event(name));
+  const playing = () => button.classList.contains("is-playing");
+
+  fire("pause");
+  check("the button starts still", playing(), false);
+  fire("play");
+  check("asking for the track does not make it look playing", playing(), false);
+  fire("playing");
+  check("sound starting does", playing(), true);
+  fire("pause");
+  check("and pausing stops it looking playing", playing(), false);
+
+  // and the slash is there to see, rather than one still state looking like the other
+  const slash = button.querySelector(".music__slash");
+  check("a struck-through note marks the still state", !!slash, true);
+  check("hidden only while it plays",
+    /\.music\.is-playing\s+\.music__slash\s*\{[^}]*display:\s*none/
+      .test(fs.readFileSync(path.join(root, "css/dock.css"), "utf8")), true);
+}
+
 console.log(fail ? `\n${fail} failing` : "\nall good");
 process.exit(fail ? 1 : 0);

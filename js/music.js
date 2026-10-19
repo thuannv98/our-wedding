@@ -23,11 +23,13 @@
       button.setAttribute("aria-pressed", String(on));
     }
 
+    // Asking is not hearing. The button is never marked from here: it follows the audio
+    // element's own events, below.
     function play() {
       var p;
       try { p = audio.play(); } catch (err) { return Promise.reject(err); }
-      if (!p || !p.then) { mark(true); return Promise.resolve(); }   // an older browser
-      return p.then(function () { mark(true); });
+      if (!p || !p.then) { mark(!audio.paused); return Promise.resolve(); }   // an older browser
+      return p;
     }
 
     // One attempt per gesture, and the listeners stay until one of them gets through:
@@ -61,13 +63,19 @@
 
     play().catch(listen);
 
-    // the pause the visitor asks for themselves is final: stop chasing it
+    // "play" fires when playback is asked for, "playing" when sound actually starts. The
+    // file is not fetched until the doors open, so between the two there are seconds of
+    // loading: marked from "play", the button claimed to be playing while it was silent.
+    audio.addEventListener("playing", function () { mark(true); });
     audio.addEventListener("pause", function () { mark(false); });
-    audio.addEventListener("play", function () { mark(true); });
+    audio.addEventListener("ended", function () { mark(false); });
 
+    // The button does what it looks like it will do. Reading audio.paused instead would
+    // make a tap on a silent button pause a track that had been asked for but had not
+    // begun, and the visitor would hear nothing change.
     button.addEventListener("click", function () {
-      if (audio.paused) { play().catch(function () {}); }
-      else { audio.pause(); stopListening(); }
+      if (button.classList.contains("is-playing")) { audio.pause(); stopListening(); }
+      else { play().catch(function () {}); }
     });
   }
 
